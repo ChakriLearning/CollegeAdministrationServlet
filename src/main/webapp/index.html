@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage Type Options</title>
+</head>
+<body>
+<h1>Welcome to College Administration</h1>
+<p>Where do you want to save the data?</p>
+<form action="asyncstoragetype" method="post">
+    <input type="radio" id="inMemory" name="storageType" value="inmemory">
+    <label for="inMemory">InMemory</label><br>
+    <input type="radio" id="fileMemory" name="storageType" value="filememory">
+    <label for="fileMemory">FileMemory</label><br>
+    <input type="radio" id="csv" name="storageType" value="csv">
+    <label for="csv">CSV</label><br>
+    <input type="radio" id="inDb" name="storageType" value="db">
+    <label for="inDb">InDB</label><br><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
