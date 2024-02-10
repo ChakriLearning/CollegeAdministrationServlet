@@ -5,13 +5,20 @@ import com.college.student.service.StudentService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 public class ListStudentServlet extends HttpServlet {
+    public static final Logger logger = LoggerFactory.getLogger(ListStudentServlet.class);
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        logger.debug("This is a debug message");
+        logger.info("This is an info message");
+        logger.warn("This is a warning message");
+        logger.error("This is an error message");
         StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
         List<Student> studentList = studentService.listStudents();
         response.setContentType("text/html");

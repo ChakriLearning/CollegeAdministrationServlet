@@ -14,14 +14,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import static com.college.student.crudservlet.ListStudentServlet.logger;
+
 public class AdmissionControllerServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
+        logger.debug("This is a debug message");
+        logger.info("This is an info message");
+        logger.warn("This is a warning message");
+        logger.error("This is an error message");
         StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
         String studentChoice = (String) request.getParameter("choice");
         PrintWriter out = response.getWriter();
         switch (studentChoice) {
-            case "1" :
+            case "1" :  //add student
                 out.println("<!DOCTYPE html>");
                 out.println("<html lang=\"en\">");
                 out.println("<head>");
@@ -45,10 +51,10 @@ public class AdmissionControllerServlet extends HttpServlet {
                 out.println("</body>");
                 out.println("</html>");
                 break;
-            case "2" :
+            case "2" : //list student data
                 request.getRequestDispatcher("liststudents").include(request,response);
                 break;
-            case "3" :
+            case "3" : //delete student
                 response.setContentType("text/html");
                 out.println("<!DOCTYPE html>");
                 out.println("<html lang=\"en\">");
@@ -66,7 +72,7 @@ public class AdmissionControllerServlet extends HttpServlet {
                 out.println("</body>");
                 out.println("</html>");
                 break;
-            case "4" :
+            case "4" : //update student
                 out.println("<!DOCTYPE html>");
                 out.println("<html lang=\"en\">");
                 out.println("<head>");
@@ -86,7 +92,7 @@ public class AdmissionControllerServlet extends HttpServlet {
                 out.println("</body>");
                 out.println("</html>");
                 break;
-            case "5" :
+            case "5" : //get student data
                 response.setContentType("text/html");
                 out.println("<!DOCTYPE html>");
                 out.println("<html lang=\"en\">");
