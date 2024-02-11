@@ -1,4 +1,4 @@
-package com.college.student.crudservlet;
+package com.college.student.controller;
 
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
@@ -9,20 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class UpdateStudentServlet extends HttpServlet {
+public class GetStudentDataServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
-        int studentRollNo = Integer.parseInt((String) request.getParameter("rollNo"));
-        String studentName = (String) request.getParameter("name");
-        byte studentAge = Byte.parseByte((String) request.getParameter("age"));
-        long studentPhoneNo = Long.parseLong((String) request.getParameter("phoneNo"));
-        Student student = new Student();
-        student.setRollNo(studentRollNo);
-        student.setName(studentName);
-        student.setAge(studentAge);
-        student.setPhoneNo(studentPhoneNo);
-        studentService.updateStudentDetailsByRollNo(student);
+        Student student = studentService.deleteStudentByRollNo(Integer.parseInt(request.getParameter("rollNo")));
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"en\">");
@@ -32,9 +23,9 @@ public class UpdateStudentServlet extends HttpServlet {
         out.println("<title>Added</title>");
         out.println("</head>");
         out.println("<body>");
-        out.println("<h1>" + studentRollNo + "   " + studentName + "  " + studentAge + "  " + studentPhoneNo + "<h1>");
-        out.println("<h1>Student Detail's Added Successfully</h1>");
-        out.println("<a href='StudentChoices.html'>Main Page</a>");
+        out.println("<h1>" + student.getRollNo() + "   " + student.getName() + "  " + student.getRollNo() + "  " + student.getPhoneNo() + "<h1>");
+        out.println("<h1>Student Detail</h1>");
+        out.println("<a href='StudentChoices.html'><h1>Main Page<h1></a>");
         out.println("</body>");
         out.println("</html>");
     }

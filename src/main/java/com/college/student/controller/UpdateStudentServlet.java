@@ -1,4 +1,4 @@
-package com.college.student.crudservlet;
+package com.college.student.controller;
 
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class AddStudentServlet extends HttpServlet {
+public class UpdateStudentServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
@@ -22,7 +22,7 @@ public class AddStudentServlet extends HttpServlet {
         student.setName(studentName);
         student.setAge(studentAge);
         student.setPhoneNo(studentPhoneNo);
-        studentService.addStudent(student);
+        studentService.updateStudentDetailsByRollNo(student);
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"en\">");

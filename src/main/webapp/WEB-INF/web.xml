@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
@@ -33,7 +35,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>AddStudent</servlet-name>
-        <servlet-class>com.college.student.crudservlet.AddStudentServlet</servlet-class>
+        <servlet-class>com.college.student.controller.AddStudentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddStudent</servlet-name>
@@ -41,7 +43,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ListStudents</servlet-name>
-        <servlet-class>com.college.student.crudservlet.ListStudentServlet</servlet-class>
+        <servlet-class>com.college.student.controller.ListStudentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ListStudents</servlet-name>
@@ -49,7 +51,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>UpdateStudent</servlet-name>
-        <servlet-class>com.college.student.crudservlet.UpdateStudentServlet</servlet-class>
+        <servlet-class>com.college.student.controller.UpdateStudentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateStudent</servlet-name>
@@ -57,7 +59,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>DeleteStudent</servlet-name>
-        <servlet-class>com.college.student.crudservlet.DeleteStudentServlet</servlet-class>
+        <servlet-class>com.college.student.controller.DeleteStudentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DeleteStudent</servlet-name>
@@ -65,17 +67,20 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>GetStudent</servlet-name>
-        <servlet-class>com.college.student.crudservlet.GetStudentDataServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Faces Servlet</servlet-name>
-        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <servlet-class>com.college.student.controller.GetStudentDataServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetStudent</servlet-name>
         <url-pattern>/getstudent</url-pattern>
     </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>

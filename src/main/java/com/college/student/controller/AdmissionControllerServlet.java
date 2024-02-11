@@ -1,20 +1,15 @@
 package com.college.student.controller;
 
-import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
-import static com.college.student.crudservlet.ListStudentServlet.logger;
+import static com.college.student.controller.ListStudentServlet.logger;
 
 public class AdmissionControllerServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

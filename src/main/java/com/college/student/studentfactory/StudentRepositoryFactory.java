@@ -2,6 +2,7 @@ package com.college.student.studentfactory;
 
 import com.college.student.repository.StudentRepository;
 import com.college.student.repository.impl.InCSVFileStudentRepositoryImpl;
+import com.college.student.repository.impl.InDBRepositoryImplementation;
 import com.college.student.repository.impl.InFileStudentRepositoryImpl;
 import com.college.student.repository.impl.InMemoryStudentRepositoryImpl;
 
@@ -27,8 +28,8 @@ public class StudentRepositoryFactory {
             studentRepository = new InCSVFileStudentRepositoryImpl();
             map.put(storageType,studentRepository);
         } else if (storageType.equals("db") || storageType.equals("indb")) {
-//            studentRepository = new InDBRepositoryImplementation();
-//            map.put(storageType,studentRepository);
+            studentRepository = new InDBRepositoryImplementation();
+            map.put(storageType,studentRepository);
         }
 //        return studentRepository;
         return map.get(storageType);

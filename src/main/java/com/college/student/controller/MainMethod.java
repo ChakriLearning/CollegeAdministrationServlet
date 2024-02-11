@@ -1,6 +1,5 @@
 package com.college.student.controller;
 
-import com.college.student.crudservlet.ListStudentServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

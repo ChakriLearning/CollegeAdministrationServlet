@@ -1,4 +1,4 @@
-package com.college.student.crudservlet;
+package com.college.student.controller;
 
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
