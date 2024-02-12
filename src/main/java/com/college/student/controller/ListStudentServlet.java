@@ -21,8 +21,8 @@ public class ListStudentServlet extends HttpServlet {
         logger.warn("This is a warning message");
         logger.error("This is an error message");
         //studentService is an (object) so explicitly typecasting to (StudentService)object
-        StudentService studentService = new StudentService("db");
- //       StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
+//       StudentService studentService = new StudentService("db");
+        StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
         List<Student> studentList = studentService.listStudents();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
