@@ -25,6 +25,7 @@
         <servlet-name>AsyncStorage</servlet-name>
         <url-pattern>/asyncstoragetype</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>AsyncChoice</servlet-name>
         <servlet-class>com.college.student.controller.SetStudentChoiceServlet</servlet-class>
@@ -33,6 +34,7 @@
         <servlet-name>AsyncChoice</servlet-name>
         <url-pattern>/setchoice</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>AddStudent</servlet-name>
         <servlet-class>com.college.student.controller.AddStudentServlet</servlet-class>

@@ -21,7 +21,8 @@ public class ListStudentServlet extends HttpServlet {
         logger.warn("This is a warning message");
         logger.error("This is an error message");
         //studentService is an (object) so explicitly typecasting to (StudentService)object
-        StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
+        StudentService studentService = new StudentService("db");
+ //       StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
         List<Student> studentList = studentService.listStudents();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -32,5 +33,6 @@ public class ListStudentServlet extends HttpServlet {
 //        converting list of students to json string
         String json = gson.toJson(studentList);
         out.write(json);  //writing the json object into client's web
+        logger.debug("Occurs at line 36 of ListStudentServlet.java");
     }
 }
