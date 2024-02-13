@@ -36,7 +36,12 @@
     let urlSearchParams = new URLSearchParams(queryString);
   let rollNo = urlSearchParams.get("rollNo");
     //let rollNo = 10;
-    fetch(`http://localhost:8081/CollegeAdministrationServlet/getstudent?rollNo=${rollNo}`)
+    fetch(`http://localhost:8081/CollegeAdministrationServlet/student?rollNo=${rollNo}`,{
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
         .then(response => response.json())
         .then(data => {
             console.log("line 19 invoked");
@@ -73,6 +78,5 @@
         })
         .catch(error => console.error('Error fetching JSON data:', error));
 </script>
-<a href='StudentChoices.html'><h2>click here</h2></a> For Main Page
 </body>
 </html>

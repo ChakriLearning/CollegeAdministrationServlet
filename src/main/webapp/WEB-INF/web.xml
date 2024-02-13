@@ -10,65 +10,80 @@
         <param-value>/log4j2.xml</param-value>
     </context-param>
     <servlet>
-        <servlet-name>controller</servlet-name>
-        <servlet-class>com.college.student.controller.AdmissionControllerServlet</servlet-class>
+        <servlet-name>student-servlet</servlet-name>
+        <servlet-class>com.college.student.controller.StudentServlet</servlet-class>
+        <init-param>
+            <param-name>storageType</param-name>
+            <param-value>db</param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>controller</servlet-name>
-        <url-pattern>/control</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>AsyncStorage</servlet-name>
-        <servlet-class>com.college.student.controller.SetStorageTypeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AsyncStorage</servlet-name>
-        <url-pattern>/asyncstoragetype</url-pattern>
+        <servlet-name>student-servlet</servlet-name>
+        <url-pattern>/student</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>AddStudent</servlet-name>
-        <servlet-class>com.college.student.controller.AddStudentServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddStudent</servlet-name>
-        <url-pattern>/addstudent</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ListStudents</servlet-name>
-        <servlet-class>com.college.student.controller.ListStudentServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ListStudents</servlet-name>
-        <url-pattern>/list-students</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>UpdateStudent</servlet-name>
-        <servlet-class>com.college.student.controller.UpdateStudentServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UpdateStudent</servlet-name>
-        <url-pattern>/updatestudent</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>DeleteStudent</servlet-name>
-        <servlet-class>com.college.student.controller.DeleteStudentServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DeleteStudent</servlet-name>
-        <url-pattern>/deletestudent</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>GetStudent</servlet-name>
-        <servlet-class>com.college.student.controller.GetStudentDataServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>GetStudent</servlet-name>
-        <url-pattern>/getstudent</url-pattern>
-    </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>ListStudentDataTable.html</welcome-file>
     </welcome-file-list>
+
+<!--    <servlet>-->
+<!--        <servlet-name>controller</servlet-name>-->
+<!--        <servlet-class>com.college.student.controller.oldfiles.AdmissionControllerServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>controller</servlet-name>-->
+<!--        <url-pattern>/control</url-pattern>-->
+<!--    </servlet-mapping>-->
+<!--    <servlet>-->
+<!--        <servlet-name>AsyncStorage</servlet-name>-->
+<!--        <servlet-class>com.college.student.controller.oldfiles.SetStorageTypeServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>AsyncStorage</servlet-name>-->
+<!--        <url-pattern>/asyncstoragetype</url-pattern>-->
+<!--    </servlet-mapping>-->
+
+<!--    <servlet>-->
+<!--        <servlet-name>AddStudent</servlet-name>-->
+<!--        <servlet-class>com.college.student.controller.oldfiles.AddStudentServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>AddStudent</servlet-name>-->
+<!--        <url-pattern>/addstudent</url-pattern>-->
+<!--    </servlet-mapping>-->
+<!--    <servlet>-->
+<!--        <servlet-name>ListStudents</servlet-name>-->
+<!--        <servlet-class>com.college.student.controller.oldfiles.ListStudentServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>ListStudents</servlet-name>-->
+<!--        <url-pattern>/list-students</url-pattern>-->
+<!--    </servlet-mapping>-->
+<!--    <servlet>-->
+<!--        <servlet-name>UpdateStudent</servlet-name>-->
+<!--        <servlet-class>com.college.student.controller.oldfiles.UpdateStudentServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>UpdateStudent</servlet-name>-->
+<!--        <url-pattern>/updatestudent</url-pattern>-->
+<!--    </servlet-mapping>-->
+<!--    <servlet>-->
+<!--        <servlet-name>DeleteStudent</servlet-name>-->
+<!--        <servlet-class>com.college.student.controller.oldfiles.DeleteStudentServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>DeleteStudent</servlet-name>-->
+<!--        <url-pattern>/deletestudent</url-pattern>-->
+<!--    </servlet-mapping>-->
+<!--    <servlet>-->
+<!--        <servlet-name>GetStudent</servlet-name>-->
+<!--        <servlet-class>com.college.student.controller.oldfiles.GetStudentDataServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>GetStudent</servlet-name>-->
+<!--        <url-pattern>/getstudent</url-pattern>-->
+<!--    </servlet-mapping>-->
+
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

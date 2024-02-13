@@ -1,4 +1,4 @@
-package com.college.student.controller;
+package com.college.student.controller.oldfiles;
 
 import com.college.student.service.StudentService;
 import jakarta.servlet.ServletContext;

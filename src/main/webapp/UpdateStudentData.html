@@ -30,6 +30,7 @@
 </head>
 <body>
 <h1>Update Student Details</h1>
+<p id="updateInfo">You are updating Roll No: <span id="rollNoDisplay"></span></p>
 <form class="form" method="post">
     <label for="name">Enter New Name to update:</label>
     <input type="text" id="name" name="name" required><br><br>
@@ -44,6 +45,16 @@
     console.log(queryString);
     let urlSearchParams = new URLSearchParams(queryString);
     let rollNo = urlSearchParams.get("rollNo");
+    let name = urlSearchParams.get("name");
+    let age = urlSearchParams.get("age");
+    let phoneNo = urlSearchParams.get("phoneNo");
+
+    // Set input values to URL parameters
+    document.getElementById('name').value = name;
+    document.getElementById('age').value = age;
+    document.getElementById('phoneNo').value = phoneNo;
+    document.getElementById('rollNoDisplay').textContent = rollNo;
+
     const formData = document.querySelector('.form');
     formData.addEventListener('submit', event => {
         event.preventDefault();
@@ -51,8 +62,8 @@
         // this creates a js object
         const data = Object.fromEntries(studentData);
         data.rollNo = rollNo;
-        fetch('http://localhost:8081/CollegeAdministrationServlet/updatestudent', {
-            method: 'post',
+        fetch('http://localhost:8081/CollegeAdministrationServlet/student', {
+            method: 'put',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -90,7 +101,6 @@
 </tbody>
 </table>
                         <hr>
-              <p><a href='StudentChoices.html'><h2>click here</h2></a> For Main Page</p>
           `;
 
                 // Append the student div to the student list div

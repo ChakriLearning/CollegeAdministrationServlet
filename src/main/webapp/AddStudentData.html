@@ -50,7 +50,7 @@
         const studentData = new FormData(formData);
         // this creates a js object
         const data = Object.fromEntries(studentData);
-        fetch('http://localhost:8081/CollegeAdministrationServlet/addstudent', {
+        fetch('http://localhost:8081/CollegeAdministrationServlet/student', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
@@ -91,7 +91,6 @@
                         <hr>
               <hr>
               <p>Student Added Successfully</p>
-              <p><a href='StudentChoices.html'><h2>click here</h2></a> For Main Page</p>
           `;
 
                 // Append the student div to the student list div

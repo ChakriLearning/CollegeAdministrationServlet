@@ -3,95 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete Student</title>
-    <style>
-        /* CSS styles for the table and its rows */
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        tr:hover {
-            background-color: #f5f5f5; /* Change background color on hover */
-        }
-
-        /* CSS styles for the table header */
-        th {
-            background-color: #4CAF50; /* Green */
-            color: white;
-        }
-    </style>
 </head>
 <body>
-<h1>Delete Student</h1>
-<p>Enter Student Roll No To Delete:</p>
-<form id="studentForm" method="post">
-    <label for="rollNo">Roll No:</label>
-    <input type="text" id="rollNo" name="rollNo" required>
-    <input type="submit" value="Delete Student">
-</form>
-
 <div id="studentInfo">
     <!-- Student information will be displayed here -->
 </div>
 
 <script>
-    const form = document.getElementById('studentForm');
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const rollNo = document.getElementById('rollNo').value;
+    // Get the query string from the URL
+    const queryString = window.location.search;
 
-        // Create JSON object with rollNo
-        const data = {
-            rollNo: rollNo
-        };
+    // Parse the query string to get parameters
+    const urlParams = new URLSearchParams(queryString);
 
-        // Send data to deleteStudentServlet as json
-        fetch('http://localhost:8081/CollegeAdministrationServlet/deletestudent', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+    // Get the value of the rollNo parameter
+    const rollNo = urlParams.get('rollNo');
+
+    // Create JSON object with rollNo
+    const data = {
+        rollNo: rollNo
+    };
+
+    // Send data to deleteStudentServlet as JSON
+    fetch('http://localhost:8081/CollegeAdministrationServlet/student', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Student deleted successfully:', data);
+            // Display student information
+            window.location.href = `SuccessInfo.html?rollNo=${rollNo}&status=ok&class=del`;
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Student deleted successfully:', data);
-                // Display student information
-                document.getElementById('studentInfo').innerHTML = `
-                    <h2>Deleted Student Information:</h2>
-                   <table border="1">
-<thead>
-<tr>
-<th>RollNo</th>
-<th>Name</th>
-<th>Age</th>
-<th>PhoneNo</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>${data.rollNo}</td>
-<td>${data.name}</td>
-<td>${data.age}</td>
-<td>${data.phoneNo}</td>
-</tr>
-</tbody>
-</table>
-                        <hr>
-                `;
-            })
-            .catch(error => {
-                console.error('Error deleting student:', error);
-                // Handle error here
-            });
-    });
+        .catch(error => {
+            console.error('Error deleting student:', error);
+            // Handle error here
+        });
 </script>
 </body>
 </html>
-

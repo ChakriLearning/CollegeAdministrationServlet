@@ -1,8 +1,7 @@
-package com.college.student.controller;
+package com.college.student.controller.oldfiles;
 
-import com.college.student.pojo.Student;
+import com.college.student.controller.oldfiles.UpdateStudentServlet;
 import com.college.student.service.StudentService;
-import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,8 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-
 
 
 public class AdmissionControllerServlet extends HttpServlet {
