@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class ListStudentServlet extends HttpServlet {
-    public static final Logger logger = LoggerFactory.getLogger(ListStudentServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(ListStudentServlet.class);
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         logger.debug("This is a debug message");
         logger.info("This is an info message");

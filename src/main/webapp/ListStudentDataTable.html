@@ -43,6 +43,7 @@
             let table = document.createElement('table');
             table.border = "1";
 
+            //
             // Creating  table header dynamically
             let thead = document.createElement('thead');
             //creating the table row;
@@ -68,8 +69,8 @@
                         <td>${student.name}</td>
                         <td>${student.age}</td>
                         <td>${student.phoneNo}</td>
-                        <td><a href="GetStudentData.html">Edit</a></td>
-                        <td><a href="DeleteStudent.html">Delete</a></td>
+                        <td><a href=<td><a href="UpdateStudentData.html?rollNo=${student.rollNo}">Edit</a></td>
+                        <td><a href="DeleteStudentData.html">Delete</a></td>
                     `;
                 tbody.appendChild(row);  //appending each row to <tbody> element
             });

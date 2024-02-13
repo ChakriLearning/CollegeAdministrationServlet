@@ -6,12 +6,15 @@ import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.college.student.controller.ListStudentServlet.logger;
 
 public class GetStudentDataServlet extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(UpdateStudentServlet.class);
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 //        response.setContentType("text/html");
         response.setContentType("application/json");

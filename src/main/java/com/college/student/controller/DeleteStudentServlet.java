@@ -2,47 +2,38 @@ package com.college.student.controller;
 
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
+import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class DeleteStudentServlet extends HttpServlet {
+    private final StudentService studentService = new StudentService("db");
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+        response.setContentType("application/json");
+        Gson gson = new Gson();
+
+        // Read JSON data from the request body
+        BufferedReader reader = request.getReader();
+        String jsonRequestBody = reader.readLine();
+
+        // Convert JSON data to Student object
+        Student student = gson.fromJson(jsonRequestBody, Student.class);
+
+        // Delete the student by roll number and get the deleted student
+        Student deletedStudent = studentService.deleteStudentByRollNo(student.getRollNo());
+
+        // Convert deletedStudent object to JSON
+        String jsonResponse = gson.toJson(deletedStudent);
+
+        // Send the JSON response back to the client
         PrintWriter out = response.getWriter();
-        StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
-        if (!studentService.isStudentExist(Integer.parseInt(request.getParameter("rollNo")))) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html lang=\"en\">");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\">");
-            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-            out.println("<title>notFound</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h3>Student with rollNo :  " + request.getParameter("rollNo") + " <strong> - Not Found</strong><h3>");
-            out.println("click below to manage students<br>");
-            out.println("<br>click below : <a href='StudentChoices.html'><h2>click here<h2></a>");
-            out.println("</body>");
-            out.println("</html>");
-        } else {
-            Student student = studentService.deleteStudentByRollNo(Integer.parseInt(request.getParameter("rollNo")));
-            out.println("<!DOCTYPE html>");
-            out.println("<html lang=\"en\">");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\">");
-            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-            out.println("<title>Added</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>" + student.getRollNo() + "   " + student.getName() + "  " + student.getRollNo() + "  " + student.getPhoneNo() + "<h1>");
-            out.println("<h1>Student Detail's Deleted Successfully</h1>");
-            out.println(" click here : <a href='StudentChoices.html'><h1>Main Page<h1></a>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        out.println(jsonResponse);
+        out.flush();
     }
+
 }

@@ -6,14 +6,20 @@ import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
+
 public class UpdateStudentServlet extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(UpdateStudentServlet.class);
     private final StudentService studentService = new StudentService("db");
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        logger.debug("");
         response.setContentType("application/json");
         Gson gson = new Gson();
         // Read JSON data from the request body

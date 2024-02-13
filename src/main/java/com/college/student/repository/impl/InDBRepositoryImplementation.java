@@ -4,6 +4,7 @@ import com.college.student.pojo.Student;
 import com.college.student.repository.StudentRepository;
 import com.college.student.utils.DBConnector;
 
+import java.security.spec.NamedParameterSpec;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -78,14 +79,13 @@ public class InDBRepositoryImplementation implements StudentRepository {
 
     @Override
     public Student updateStudentByRollNo(Student student) {
-        String query = "update student set name = ?, age = ?, phoneNo = ? where rollNo = ?";
+        String query = "update student set name = ?, age = ?, phoneNumber = ? where rollNo = ?";
         try {
             PreparedStatement preparedStatement = DBConnector.connect().prepareStatement(query);
-            preparedStatement.setInt(1,student.getRollNo());
-            preparedStatement.setString(2,student.getName());
-            preparedStatement.setByte(3,student.getAge());
-            preparedStatement.setLong(4,student.getPhoneNo());
-
+            preparedStatement.setString(1,student.getName());
+            preparedStatement.setByte(2,student.getAge());
+            preparedStatement.setLong(3,student.getPhoneNo());
+            preparedStatement.setInt(4,student.getRollNo());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
