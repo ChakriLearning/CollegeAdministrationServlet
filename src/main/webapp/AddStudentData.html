@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+    <link rel="icon" href="">
+
+</head>
+<body>
+<h1>Add Student</h1>
+<form class="form">
+    <label for="rollNo">Student Roll No:</label>
+    <input type="number" id="rollNo" name="rollNo" required><br><br>
+    <label for="name">Student Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+    <label for="age">Student Age:</label>
+    <input type="number" id="age" name="age" required><br><br>
+    <label for="phoneNo">Student Phone Number:</label>
+    <input type="tel" id="phoneNo" name="phoneNo" required><br><br>
+    <input type="submit" value="Add Student">
+</form>
+<script>
+    const formData = document.querySelector('.form');
+    formData.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const studentData = new FormData(formData);
+        // this creates a js object
+        const data = Object.fromEntries(studentData);
+        fetch('http://localhost:8081/CollegeAdministrationServlet/addstudent', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => response.json())
+            .then(data => {
+                // Find an existing or create a new element to display student information
+                console.log("invokes line 40");
+                let studentListDiv = document.getElementById('student-list');
+                if (!studentListDiv) {
+                    studentListDiv = document.createElement('div');
+                    studentListDiv.id = 'student-list';
+                    document.body.appendChild(studentListDiv);
+                }
+
+                // Create a student div to display the added student information
+                const studentDiv = document.createElement('div');
+                studentDiv.innerHTML = `
+              <p>Roll No: ${data.rollNo}</p>
+              console.log("printing the data");
+              <p>Name: ${data.name}</p>
+              <p>Age: ${data.age}</p>
+              <p>Phone No: ${data.phoneNo}</p>
+              <hr>
+              <p>Student Added Successfully</p>
+              <p><a href='StudentChoices.html'><h2>click here</h2></a> For Main Page</p>
+          `;
+
+                // Append the student div to the student list div
+                studentListDiv.appendChild(studentDiv);
+            });
+    });
+
+</script>
+</body>
+</html>

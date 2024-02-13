@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Student Details</title>
+</head>
+<body>
+<h1>Update Student Details</h1>
+<form class="form" method="post">
+    <label for="name">Enter New Name to update:</label>
+    <input type="text" id="name" name="name" required><br><br>
+    <label for="age">Enter New Age to update:</label>
+    <input type="number" id="age" name="age" required><br><br>
+    <label for="phoneNo">Enter New PhoneNumber to update:</label>
+    <input type="tel" id="phoneNo" name="phoneNo" required><br><br>
+    <input type="submit" value="Update Student">
+</form>
+<script>
+    const queryString = window.location.search;
+    console.log(queryString);
+    let urlSearchParams = new URLSearchParams(queryString);
+    let rollNo = urlSearchParams.get("rollNo");
+    const formData = document.querySelector('.form');
+    formData.addEventListener('submit', event => {
+        event.preventDefault();
+        const studentData = new FormData(formData);
+        // this creates a js object
+        const data = Object.fromEntries(studentData);
+        data.rollNo = rollNo;
+        fetch('http://localhost:8081/CollegeAdministrationServlet/updatestudent', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => response.json())
+            .then(data => {
+                // Find an existing or create a new element to display student information
+                console.log("invokes line 40");
+                let studentListDiv = document.getElementById('student-list');
+                if (!studentListDiv) {
+                    studentListDiv = document.createElement('div');
+                    studentListDiv.id = 'student-list';
+                    document.body.appendChild(studentListDiv);
+                }
+
+                // Create a student div to display the added student information
+                const studentDiv = document.createElement('div');
+                studentDiv.innerHTML = `
+              <p>Roll No: ${data.rollNo}</p>
+              <p>Name: ${data.name}</p>
+              <p>Age: ${data.age}</p>
+              <p>Phone No: ${data.phoneNo}</p>
+              <hr>
+              <p>Student Updated Successfully</p>
+              <p><a href='StudentChoices.html'><h2>click here</h2></a> For Main Page</p>
+          `;
+
+                // Append the student div to the student list div
+                studentListDiv.appendChild(studentDiv);
+            });
+    });
+
+</script>
+</body>
+</html>
+

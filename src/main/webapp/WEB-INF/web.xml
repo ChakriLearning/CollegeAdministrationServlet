@@ -27,15 +27,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>AsyncChoice</servlet-name>
-        <servlet-class>com.college.student.controller.SetStudentChoiceServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AsyncChoice</servlet-name>
-        <url-pattern>/setchoice</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>AddStudent</servlet-name>
         <servlet-class>com.college.student.controller.AddStudentServlet</servlet-class>
     </servlet>
@@ -49,7 +40,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ListStudents</servlet-name>
-        <url-pattern>/liststudents</url-pattern>
+        <url-pattern>/list-students</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>UpdateStudent</servlet-name>

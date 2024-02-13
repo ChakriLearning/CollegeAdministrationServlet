@@ -81,10 +81,11 @@ public class InDBRepositoryImplementation implements StudentRepository {
         String query = "update student set name = ?, age = ?, phoneNo = ? where rollNo = ?";
         try {
             PreparedStatement preparedStatement = DBConnector.connect().prepareStatement(query);
-            preparedStatement.setString(1,student.getName());
-            preparedStatement.setByte(2,student.getAge());
-            preparedStatement.setLong(3,student.getPhoneNo());
-            preparedStatement.setLong(4,student.getRollNo());
+            preparedStatement.setInt(1,student.getRollNo());
+            preparedStatement.setString(2,student.getName());
+            preparedStatement.setByte(3,student.getAge());
+            preparedStatement.setLong(4,student.getPhoneNo());
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

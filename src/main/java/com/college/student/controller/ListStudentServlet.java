@@ -15,16 +15,18 @@ import java.util.List;
 
 public class ListStudentServlet extends HttpServlet {
     public static final Logger logger = LoggerFactory.getLogger(ListStudentServlet.class);
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         logger.debug("This is a debug message");
         logger.info("This is an info message");
         logger.warn("This is a warning message");
         logger.error("This is an error message");
+        logger.debug("Occurs at line 23 of ListStudentServlet.java");
         //studentService is an (object) so explicitly typecasting to (StudentService)object
-//       StudentService studentService = new StudentService("db");
-        StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
+       StudentService studentService = new StudentService("db");
+ //      StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
         List<Student> studentList = studentService.listStudents();
         response.setContentType("application/json");
+      //  response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 //        creating a Gson Object to convert java objects into json format
         Gson gson = new Gson();
@@ -32,7 +34,9 @@ public class ListStudentServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 //        converting list of students to json string
         String json = gson.toJson(studentList);
-        out.write(json);  //writing the json object into client's web
+        out.print(json);  //writing the json object into client's web
+        out.flush();
         logger.debug("Occurs at line 36 of ListStudentServlet.java");
+//        request.getRequestDispatcher("ListStudents.html").forward(request,response);
     }
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter Your RollNo</title>
+</head>
+<body>
+<p>Enter Your RollNo</p>
+<form id="studentForm" method="get">
+    <label for="rollNo">RollNo:</label>
+    <input type="text" id="rollNo" name="rollNo">
+    <input type="submit" value="Submit">
+</form>
+<script>
+    const queryString = window.location.search;
+    console.log(queryString);
+    let urlSearchParams = new URLSearchParams(queryString);
+    let choice = urlSearchParams.get("choice");
+    const rollNo = document.getElementById('rollNo');
+    const form = document.getElementById('studentForm');
+    form.addEventListener('submit',(event) =>{
+        event.preventDefault();
+        if (choice === "3") {
+            form.action = `DeleteStudentData.html?rollNo=${rollNo}`;
+        } else if (choice === "4") {
+            form.action = `UpdateStudentData.html?rollNo=${rollNo}`;
+        } else {
+            form.action = `GetStudentData.html?rollNo=${rollNo}`;
+        }
+        form.submit();
+    });
+</script>
+</body>
+</html>
