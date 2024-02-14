@@ -28,15 +28,14 @@
 </head>
 <body>
 <h1>Student Data : </h1>
-<div id="getstudent"></div>
+<div id="Student Data"></div>
 
 <script>
     const queryString = window.location.search;
     console.log(queryString);
     let urlSearchParams = new URLSearchParams(queryString);
-  let rollNo = urlSearchParams.get("rollNo");
-    //let rollNo = 10;
-    fetch(`http://localhost:8081/CollegeAdministrationServlet/student?rollNo=${rollNo}`,{
+    let rollNo = urlSearchParams.get("rollNo");
+    fetch(`http://localhost:8081/CollegeAdministrationServlet/student?rollNo=${rollNo}`, {
         method: 'get',
         headers: {
             'Content-Type': 'application/json'
@@ -44,14 +43,9 @@
     })
         .then(response => response.json())
         .then(data => {
-            console.log("line 19 invoked");
-            let studentListDiv = document.getElementById('getstudent');
-
-                // Create a <div> element to contain each student's information
-                let studentDiv = document.createElement('div');
-
-                // Set the content of the <div> using template literals
-                studentDiv.innerHTML = `
+            let studentListDiv = document.getElementById('Student Data');
+            let studentDiv = document.createElement('div');
+            studentDiv.innerHTML = `
 <table border="1">
 <thead>
 <tr>
@@ -72,11 +66,10 @@
 </table>
                         <hr>
                     `;
-
-                // Append the student's <div> to the main <div> for the list of students
-                studentListDiv.appendChild(studentDiv);
+            studentListDiv.appendChild(studentDiv);
         })
         .catch(error => console.error('Error fetching JSON data:', error));
 </script>
+<a href="ListStudentDataTable.html"><h3>Main Page</h3></a>
 </body>
 </html>

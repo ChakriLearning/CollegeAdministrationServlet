@@ -45,21 +45,21 @@
     console.log(queryString);
     let urlSearchParams = new URLSearchParams(queryString);
     let rollNo = urlSearchParams.get("rollNo");
-    let name = urlSearchParams.get("name");
-    let age = urlSearchParams.get("age");
-    let phoneNo = urlSearchParams.get("phoneNo");
-
-    // Set input values to URL parameters
-    document.getElementById('name').value = name;
-    document.getElementById('age').value = age;
-    document.getElementById('phoneNo').value = phoneNo;
     document.getElementById('rollNoDisplay').textContent = rollNo;
-
+    fetch(`http://localhost:8081/CollegeAdministrationServlet/student?rollNo=${rollNo}`,{ method :'get'})
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('name').value = data.name;
+            document.getElementById('age').value = data.age;
+            document.getElementById('phoneNo').value = data.phoneNo;
+        })
+        .catch(error => {
+            console.error('Error fetching student details:', error);
+        });
     const formData = document.querySelector('.form');
     formData.addEventListener('submit', event => {
         event.preventDefault();
         const studentData = new FormData(formData);
-        // this creates a js object
         const data = Object.fromEntries(studentData);
         data.rollNo = rollNo;
         fetch('http://localhost:8081/CollegeAdministrationServlet/student', {
@@ -109,6 +109,7 @@
     });
 
 </script>
+<a href="ListStudentDataTable.html"><h3>Main Page</h3></a>
 </body>
 </html>
 

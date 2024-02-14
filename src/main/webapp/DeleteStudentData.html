@@ -28,14 +28,16 @@
     })
         .then(response => response.json())
         .then(data => {
-            console.log('Student deleted successfully:', data);
-            // Display student information
-            window.location.href = `SuccessInfo.html?rollNo=${rollNo}&status=201&file=del`;
+           const rollNo = data;
+           console.log("rollNo is : ",+ rollNo);
+            console.log(rollNo);
+            window.location.href = `SuccessInfo.html?rollNo=${rollNo}&status=201`;
         })
         .catch(error => {
             console.error('Error deleting student:', error);
             // Handle error here
         });
 </script>
+<a href="ListStudentDataTable.html"><h3>Main Page</h3></a>
 </body>
 </html>

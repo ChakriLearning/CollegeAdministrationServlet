@@ -59,46 +59,44 @@ public class StudentServlet extends HttpServlet {
         logger.info("Request Received to Get the Student Details");
         String rollNo = request.getParameter("rollNo");
         logger.info("rollNo received {}", rollNo);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
         Gson gson = new Gson();
-        PrintWriter out = response.getWriter();
-        String json = null;
+        String jsonResponse = null;
+
         if (rollNo != null) {
             try {
                 Student student = studentService.getStudentByRollNo(Integer.parseInt(rollNo));
                 logger.info("Student Details Received : {}", student);
-                json = gson.toJson(student);
+                jsonResponse = gson.toJson(student);
             } catch (Exception e) {
-                logger.error("Exception Occurred while Requested to Get Student data : ",e);
-                ErrorResponse errorResponse = new ErrorResponse(500,e.getMessage());
-                json = gson.toJson(errorResponse);
+                logger.error("Exception Occurred while Requested to Get Student data : ", e);
+                ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
+                jsonResponse = gson.toJson(errorResponse);
             }
-            out.println(json);
-            out.flush();
-            logger.info("Get Student info Completed");
         } else {
             logger.info("Request Received to List All Students");
             try {
                 List<Student> studentList = studentService.listStudents();
                 logger.info("Student List Received : {}", studentList);
-                json = gson.toJson(studentList);
+                jsonResponse = gson.toJson(studentList);
             } catch (Exception e) {
-                logger.error("Exception Occurred while Requesting the to List Student Data : ",e);
-                ErrorResponse errorResponse = new ErrorResponse(500,e.getMessage());
-                json = gson.toJson(errorResponse);
+                logger.error("Exception Occurred while Requesting the to List Student Data : ", e);
+                ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
+                jsonResponse = gson.toJson(errorResponse);
             }
-            out.print(json);
-            out.flush();
-            logger.info("List Students Successfully Completed");
         }
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(jsonResponse);
+        out.flush();
+        logger.info("Response Successfully Generated");
     }
 
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.info("Request Received to Update the Student Data");
         Gson gson = new Gson();
         String jsonResponse = null;
-
         try {
             BufferedReader reader = request.getReader();
             StringBuilder jsonStringBuilder = new StringBuilder();
@@ -108,7 +106,7 @@ public class StudentServlet extends HttpServlet {
             }
             logger.info("Request to Update the Student : {}", jsonStringBuilder);
             Student student = gson.fromJson(jsonStringBuilder.toString(), Student.class);
-            studentService.updateStudentDetailsByRollNo(student);
+            student = studentService.updateStudentDetailsByRollNo(student);
             logger.info("Request Successfully Completed for Update for Student {}", student);
             jsonResponse = gson.toJson(student);
             logger.info("Generated the Json Response : {}", jsonResponse);
@@ -119,6 +117,7 @@ public class StudentServlet extends HttpServlet {
         }
 
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         out.print(jsonResponse);
         out.flush();
@@ -127,18 +126,23 @@ public class StudentServlet extends HttpServlet {
 
     public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException, JsonSyntaxException {
         logger.info("Request to Delete Student Received");
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        String jsonResponse = null;
         int rollNo = Integer.MIN_VALUE;
         try {
             rollNo = Integer.parseInt(request.getParameter("rollNo"));
             logger.info("Successfully Received Student RollNo : {}", rollNo);
-            studentService.deleteStudentByRollNo(rollNo);
+            Student student = studentService.deleteStudentByRollNo(rollNo);
+            jsonResponse = gson.toJson(rollNo);
+            logger.info("Successfully Deleted the Student : {}",student);
         } catch (Exception e) {
             logger.info("Exception Occurred while Deleting a Student having rollNo : {} and Exception : ", rollNo, e);
             ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
-            out.println(errorResponse);
+            jsonResponse = gson.toJson(errorResponse);
         }
-        out.println(rollNo);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println(jsonResponse);
     }
 }
