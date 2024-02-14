@@ -15,10 +15,10 @@
     // Get the value of the rollNo parameter
     const rollNo = urlParams.get('rollNo');
     const statusCode = urlParams.get("status");
-    const file = urlParams.get("class");
-    if (file === del) {
+    const file = urlParams.get("file");
+    if (file === 'del') {
         const messageElement = document.createElement('p');
-        messageElement.textContent = `Student with Roll No ${rollNo} has been successfully deleted.`;
+        messageElement.textContent = `<h3>Student with Roll No ${rollNo} has been successfully deleted.</h3>`;
         document.body.appendChild(messageElement);
 
         // Set the status code to 'OK'

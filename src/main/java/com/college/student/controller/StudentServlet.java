@@ -1,9 +1,11 @@
 package com.college.student.controller;
 
 import com.college.student.controller.oldfiles.UpdateStudentServlet;
+import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,115 +19,126 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class StudentServlet extends HttpServlet {
-    private static final Logger logger = LoggerFactory.getLogger(UpdateStudentServlet.class);
-    private  StudentService studentService;
+    private static final Logger logger = LoggerFactory.getLogger(StudentServlet.class);
+    private StudentService studentService;
+
     public void init(ServletConfig servletConfig) {
         this.studentService = new StudentService(servletConfig.getInitParameter("storageType"));
     }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        logger.debug("invokes doPost() method at line 21-StudentServlet.java");
-        response.setContentType("application/json");
         Gson gson = new Gson();
-        // Read JSON data from the request body
-        BufferedReader reader = request.getReader();
-        StringBuilder jsonStringBuilder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            jsonStringBuilder.append(line);
+        String jsonResponse = null;
+        try {
+            logger.info("Request Received to Add Student");
+            BufferedReader reader = request.getReader();
+            StringBuilder jsonStringBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonStringBuilder.append(line);
+            }
+            String jsonString = jsonStringBuilder.toString();
+            logger.info("Request String Received {}", jsonString);
+            Student student = gson.fromJson(jsonString, Student.class);
+            logger.info("Student Object Received : {}", student);
+            studentService.addStudent(student);
+            logger.info("Added Student to DB");
+            jsonResponse = gson.toJson(student);
+        } catch (Exception e) {
+            logger.error("Exception Occurred while Added Student : ", e);
+            ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
+            jsonResponse = gson.toJson(errorResponse);
         }
-
-        // Convert JSON data to Student object
-        Student student = gson.fromJson(jsonStringBuilder.toString(), Student.class);
-
-        // Perform necessary operations (e.g., adding student to database)
-        studentService.addStudent(student);
-
-        // Prepare response JSON
-        String jsonResponse = gson.toJson(student);
-
-        // Send response back to client
+        response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         out.print(jsonResponse);
         out.flush();
     }
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getParameter("rollNo") != null) {
-            response.setContentType("text/html");
-            response.setContentType("application/json");
-            //  response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
-            //    StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
-            StudentService studentService = new StudentService("db");
-            Student student = studentService.getStudentByRollNo(Integer.parseInt(request.getParameter("rollNo")));
-            PrintWriter out = response.getWriter();
-            Gson gson = new Gson();
-            String stuJson = gson.toJson(student);
-            out.write(stuJson);
+        logger.info("Request Received to Get the Student Details");
+        String rollNo = request.getParameter("rollNo");
+        logger.info("rollNo received {}", rollNo);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        Gson gson = new Gson();
+        PrintWriter out = response.getWriter();
+        String json = null;
+        if (rollNo != null) {
+            try {
+                Student student = studentService.getStudentByRollNo(Integer.parseInt(rollNo));
+                logger.info("Student Details Received : {}", student);
+                json = gson.toJson(student);
+            } catch (Exception e) {
+                logger.error("Exception Occurred while Requested to Get Student data : ",e);
+                ErrorResponse errorResponse = new ErrorResponse(500,e.getMessage());
+                json = gson.toJson(errorResponse);
+            }
+            out.println(json);
             out.flush();
-            logger.debug("invokes line 27 of getStudentdataservlet.java");
+            logger.info("Get Student info Completed");
         } else {
-            List<Student> studentList = studentService.listStudents();
-            response.setContentType("application/json");
-            //  response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
-//        creating a Gson Object to convert java objects into json format
-            Gson gson = new Gson();
-//        creating printWriter to send the json object to client Web Browser
-            PrintWriter out = response.getWriter();
-//        converting list of students to json string
-            String json = gson.toJson(studentList);
-            out.print(json);  //writing the json object into client's web
+            logger.info("Request Received to List All Students");
+            try {
+                List<Student> studentList = studentService.listStudents();
+                logger.info("Student List Received : {}", studentList);
+                json = gson.toJson(studentList);
+            } catch (Exception e) {
+                logger.error("Exception Occurred while Requesting the to List Student Data : ",e);
+                ErrorResponse errorResponse = new ErrorResponse(500,e.getMessage());
+                json = gson.toJson(errorResponse);
+            }
+            out.print(json);
             out.flush();
+            logger.info("List Students Successfully Completed");
         }
     }
+
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        logger.debug("invokes doPut() method at line 49-StudentServlet.java");
-        response.setContentType("application/json");
+        logger.info("Request Received to Update the Student Data");
         Gson gson = new Gson();
-        // Read JSON data from the request body
-        BufferedReader reader = request.getReader();
-        StringBuilder jsonStringBuilder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            jsonStringBuilder.append(line);
+        String jsonResponse = null;
+
+        try {
+            BufferedReader reader = request.getReader();
+            StringBuilder jsonStringBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonStringBuilder.append(line);
+            }
+            logger.info("Request to Update the Student : {}", jsonStringBuilder);
+            Student student = gson.fromJson(jsonStringBuilder.toString(), Student.class);
+            studentService.updateStudentDetailsByRollNo(student);
+            logger.info("Request Successfully Completed for Update for Student {}", student);
+            jsonResponse = gson.toJson(student);
+            logger.info("Generated the Json Response : {}", jsonResponse);
+        } catch (Exception e) {
+            logger.error("Exception Occurred while Updating the StudentByRollNo : ", e);
+            ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
+            jsonResponse = gson.toJson(errorResponse);
         }
 
-        // Convert JSON data to Student object
-        Student student = gson.fromJson(jsonStringBuilder.toString(), Student.class);
-
-        // Perform necessary operations (e.g., adding student to database)
-        studentService.updateStudentDetailsByRollNo(student);
-
-        // Prepare response JSON
-        String jsonResponse = gson.toJson(student);
-
-        // Send response back to client
+        response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         out.print(jsonResponse);
         out.flush();
+        logger.info("Request for Update Student Successfully Completed");
     }
-    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        logger.debug("invokes doDelete() method at line 76-StudentServlet.java");
+
+    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException, JsonSyntaxException {
+        logger.info("Request to Delete Student Received");
         response.setContentType("application/json");
-        Gson gson = new Gson();
-
-        // Read JSON data from the request body
-        BufferedReader reader = request.getReader();
-        String jsonRequestBody = reader.readLine();
-
-        // Convert JSON data to Student object
-        Student student = gson.fromJson(jsonRequestBody, Student.class);
-
-        // Delete the student by roll number and get the deleted student
-        logger.debug("line 88 - before delete");
-        Student deletedStudent = studentService.deleteStudentByRollNo(student.getRollNo());
-        logger.debug("line 90 after successfully");
-        // Convert deletedStudent object to JSON
-        String jsonResponse = gson.toJson(deletedStudent);
-
-        // Send the JSON response back to the client
         PrintWriter out = response.getWriter();
-        out.println(jsonResponse);
-        out.flush();
+        int rollNo = Integer.MIN_VALUE;
+        try {
+            rollNo = Integer.parseInt(request.getParameter("rollNo"));
+            logger.info("Successfully Received Student RollNo : {}", rollNo);
+            studentService.deleteStudentByRollNo(rollNo);
+        } catch (Exception e) {
+            logger.info("Exception Occurred while Deleting a Student having rollNo : {} and Exception : ", rollNo, e);
+            ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
+            out.println(errorResponse);
+        }
+        out.println(rollNo);
     }
 }

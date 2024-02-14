@@ -19,24 +19,18 @@
     // Get the value of the rollNo parameter
     const rollNo = urlParams.get('rollNo');
 
-    // Create JSON object with rollNo
-    const data = {
-        rollNo: rollNo
-    };
-
     // Send data to deleteStudentServlet as JSON
-    fetch('http://localhost:8081/CollegeAdministrationServlet/student', {
+    fetch(`http://localhost:8081/CollegeAdministrationServlet/student?rollNo=${rollNo}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
     })
         .then(response => response.json())
         .then(data => {
             console.log('Student deleted successfully:', data);
             // Display student information
-            window.location.href = `SuccessInfo.html?rollNo=${rollNo}&status=ok&class=del`;
+            window.location.href = `SuccessInfo.html?rollNo=${rollNo}&status=201&file=del`;
         })
         .catch(error => {
             console.error('Error deleting student:', error);
