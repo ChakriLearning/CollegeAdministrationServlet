@@ -58,6 +58,7 @@ public class AuthenticationFilter implements Filter {
 
         Gson gson = new Gson();
         String jsonResponse = gson.toJson(this.errorResponse);
+        servletResponse.setContentType("application/json");
         servletResponse.setCharacterEncoding("UTF-8");
         PrintWriter out = servletResponse.getWriter();
         out.println(jsonResponse);

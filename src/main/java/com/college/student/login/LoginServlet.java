@@ -56,7 +56,11 @@ public class LoginServlet extends HttpServlet {
             logger.error("Error Occurred while trying to Login ", e);
         }
 
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(this.errorResponse);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        out.println(this.errorResponse);
+        out.println(jsonResponse);
     }
 }
