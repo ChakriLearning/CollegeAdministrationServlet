@@ -3,7 +3,7 @@ package com.college.student.service;
 
 import com.college.student.pojo.Student;
 import com.college.student.repository.StudentRepository;
-import com.college.student.studentfactory.StudentRepositoryFactory;
+import com.college.student.repository.factory.StudentRepositoryFactory;
 
 import java.util.List;
 

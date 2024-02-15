@@ -2,7 +2,7 @@ package com.college.student.login;
 
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.service.UserService;
-import com.college.student.service.UserServiceImplementation;
+import com.college.student.service.impl.UserServiceImpl;
 import com.college.student.utils.CookieHolder;
 import com.google.gson.Gson;
 import jakarta.servlet.http.Cookie;
@@ -18,17 +18,16 @@ import java.util.UUID;
 
 public class LoginServlet extends HttpServlet {
     private final UserService userService;
-    private ErrorResponse errorResponse;
 
     public LoginServlet() {
-        this.userService = new UserServiceImplementation();
+        this.userService = new UserServiceImpl();
     }
 
     private static final Logger logger = LoggerFactory.getLogger(LoginServlet.class);
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.info("Login Request Received");
-
+        ErrorResponse errorResponse = null;
         try {
             String userName = request.getParameter("username");
             String userPassword = request.getParameter("password");
@@ -38,25 +37,32 @@ public class LoginServlet extends HttpServlet {
                 String cookieName = "my_auth_cookie";
                 Cookie cookie = new Cookie(cookieName, cookieValue);
                 logger.info("random cookie generated for new user : {}", cookieValue);
-                CookieHolder cookieHolder = new CookieHolder();
-                cookieHolder.addCookie(cookieValue, cookieName);
+                CookieHolder.addUserName(cookieValue, userName);
                 logger.info("user cookie added successfully username : {} and cookie : {}", userName, cookieValue);
                 response.addCookie(cookie);
                 logger.info("User Cookie added Successfully to browser : {}", cookie);
                 response.sendRedirect("ListStudentDataTable.html");
                 logger.info("User Redirected to ListStudent Home Page");
+                return;
             } else {
-                errorResponse = new ErrorResponse(401, "Invalid User");
+                errorResponse = new ErrorResponse(401, "Invalid UserName and Password");
                 logger.error("Invalid User Found : Username : {} and User Password : {}", userName, userPassword);
             }
         } catch (Exception e) {
-            errorResponse = new ErrorResponse(500, "Error - While logging");
+            errorResponse = new ErrorResponse(500, "Error - While logging : " + e.getMessage());
             logger.error("Error Occurred while trying to Login ", e);
         }
-
         Gson gson = new Gson();
-        String jsonResponse = gson.toJson(this.errorResponse);
+        String jsonResponse = gson.toJson(errorResponse);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         out.println(jsonResponse);
+        out.flush();
+    }
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+        //if(userName)return;
+        //else 401;
     }
 }

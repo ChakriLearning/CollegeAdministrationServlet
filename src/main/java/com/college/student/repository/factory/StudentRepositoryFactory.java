@@ -1,4 +1,4 @@
-package com.college.student.studentfactory;
+package com.college.student.repository.factory;
 
 import com.college.student.repository.StudentRepository;
 import com.college.student.repository.impl.InCSVFileStudentRepositoryImpl;

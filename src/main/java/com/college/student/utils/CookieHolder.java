@@ -4,26 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CookieHolder {
-    private static Map<String, String> userCookies; //cookie,userName
+    private static Map<String, String> userCookies = new HashMap<>();//cookie,userName
 
-    public CookieHolder() {
-        userCookies = new HashMap<>();
+
+    public static void addUserName(String cookieValue, String userName) {
+        userCookies.put(cookieValue, userName);
     }
 
-    public void addCookie(String cookieValue, String cookieName) {
-        userCookies.put(cookieValue, cookieName);
-    }
-
-    public String getCookieName(String cookieValue) {
+    public static String getUserName(String cookieValue) {
         return userCookies.get(cookieValue);
     }
 
-    public String getCookieValue(String cookieName) {
-        for (Map.Entry<String, String> entry : userCookies.entrySet()) {
-            if (entry.getValue().equals(cookieName)) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
 }
