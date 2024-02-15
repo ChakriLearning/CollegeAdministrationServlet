@@ -84,7 +84,6 @@ public class StudentServlet extends HttpServlet {
                 jsonResponse = gson.toJson(errorResponse);
             }
         }
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
@@ -134,7 +133,7 @@ public class StudentServlet extends HttpServlet {
             logger.info("Successfully Received Student RollNo : {}", rollNo);
             Student student = studentService.deleteStudentByRollNo(rollNo);
             jsonResponse = gson.toJson(rollNo);
-            logger.info("Successfully Deleted the Student : {}",student);
+            logger.info("Successfully Deleted the Student : {}", student);
         } catch (Exception e) {
             logger.info("Exception Occurred while Deleting a Student having rollNo : {} and Exception : ", rollNo, e);
             ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());

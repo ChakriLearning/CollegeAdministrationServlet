@@ -15,7 +15,9 @@ import java.io.PrintWriter;
 
 public class AuthenticationFilter implements Filter {
     private CookieHolder cookieHolder;
+    private ErrorResponse errorResponse;
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
+
     public void init(FilterConfig filterConfig) {
         cookieHolder = new CookieHolder();
     }
@@ -25,7 +27,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         boolean authenticationSuccessfull = false;
-        logger.info("http request and response generated {} and {}",httpServletRequest,httpServletResponse);
+        logger.info("http request and response generated {} and {}", httpServletRequest, httpServletResponse);
         Cookie[] cookiesFromRequest = ((HttpServletRequest) servletRequest).getCookies();
         logger.info("Array Of Cookies got From Browser");
         try {
@@ -41,26 +43,24 @@ public class AuthenticationFilter implements Filter {
                     }
                 }
             }
+            logger.error("Error Occurred While Fetching Cookies");
         } catch (Exception e) {
-            logger.info("Exception Occurred while Pre-Processing the Request : ",e);
-            ErrorResponse errorResponse = new ErrorResponse(500,"Exception Occurred while Pre-Processing the Request");
-            Gson gson = new Gson();
-            String jsonResponse = gson.toJson(errorResponse);
-            PrintWriter out = servletResponse.getWriter();
-            out.println(jsonResponse);
-            logger.error("Error Submitted to Response : " + jsonResponse);
+            logger.error("Exception Occurred while Pre-Processing the Request : ", e);
+            this.errorResponse = new ErrorResponse(500, "Exception Occurred while Pre-Processing the Request");
         }
         if (authenticationSuccessfull) {
-            logger.info("Authentication Successful : {}",authenticationSuccessfull);
-            filterChain.doFilter(servletRequest,servletResponse);
+            logger.error("Authentication Successful : {}", authenticationSuccessfull);
+            filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            logger.info("Exception Occurred while Authenticating ");
-            ErrorResponse errorResponse = new ErrorResponse(500,"Exception Occurred while Pre-Processing the Request");
-            Gson gson = new Gson();
-            String jsonResponse = gson.toJson(errorResponse);
-            PrintWriter out = servletResponse.getWriter();
-            out.println(jsonResponse);
-            logger.error("Error Submitted to Response : " + jsonResponse);
+            logger.error("Exception Occurred while Authenticating ");
+            this.errorResponse = new ErrorResponse(500, "Exception Occurred while Pre-Processing the Request");
         }
+
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(this.errorResponse);
+        servletResponse.setCharacterEncoding("UTF-8");
+        PrintWriter out = servletResponse.getWriter();
+        out.println(jsonResponse);
+        logger.error("Error Submitted to Response : " + jsonResponse);
     }
 }
