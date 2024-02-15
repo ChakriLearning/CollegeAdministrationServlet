@@ -22,8 +22,26 @@
         <url-pattern>/student</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>com.college.student.login.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>com.college.student.login.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/student</url-pattern>
+    </filter-mapping>
+
     <welcome-file-list>
-        <welcome-file>ListStudentDataTable.html</welcome-file>
+        <welcome-file>LoginPage.html</welcome-file>
     </welcome-file-list>
 
 <!--    <servlet>-->
