@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
                 Cookie cookie = new Cookie(cookieName,cookieValue);
                 logger.info("random cookie generated for new user : {}",cookieValue);
                 CookieHolder cookieHolder = new CookieHolder();
-                cookieHolder.addCookie(cookieValue,userName);
+                cookieHolder.addCookie(cookieValue,cookieName);
                 logger.info("user cookie added successfully username : {} and cookie : {}",userName,cookieValue);
                 response.addCookie(cookie);
                 logger.info("User Cookie added Successfully to browser : {}",cookie);

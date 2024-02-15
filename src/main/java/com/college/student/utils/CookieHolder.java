@@ -15,4 +15,12 @@ public class CookieHolder {
     public String getCookieName(String cookieValue) {
         return userCookies.get(cookieValue);
     }
+    public String getCookieValue(String cookieName) {
+        for (Map.Entry<String, String> entry : userCookies.entrySet()) {
+            if (entry.getValue().equals(cookieName)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
 }
