@@ -31,15 +31,16 @@ public class LoginServlet extends HttpServlet {
             String userPassword = request.getParameter("password");
 
             if (this.userService.authenticateUser(userName,userPassword)) {
-                String userCookie = UUID.randomUUID().toString(); //generating random cookie
-                Cookie cookie = new Cookie(userName,userCookie);
-                logger.info("random cookie generated for new user : {}",userCookie);
+                String cookieValue = UUID.randomUUID().toString(); //generating random cookie
+                String cookieName = "my_auth_cookie";
+                Cookie cookie = new Cookie(cookieName,cookieValue);
+                logger.info("random cookie generated for new user : {}",cookieValue);
                 CookieHolder cookieHolder = new CookieHolder();
-                cookieHolder.addCookie(userCookie,userName);
-                logger.info("user cookie added successfully username : {} and cookie : {}",userName,userCookie);
+                cookieHolder.addCookie(cookieValue,userName);
+                logger.info("user cookie added successfully username : {} and cookie : {}",userName,cookieValue);
                 response.addCookie(cookie);
                 logger.info("User Cookie added Successfully to browser : {}",cookie);
-                response.sendRedirect("ListStudentServlet.html");
+                response.sendRedirect("ListStudentDataTable.html");
                 logger.info("User Redirected to ListStudent Home Page");
             } else {
                 ErrorResponse errorResponse = new ErrorResponse(401,"Invalid User");

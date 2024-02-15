@@ -1,18 +1,18 @@
 package com.college.student.utils;
 
-import jakarta.servlet.http.Cookie;
-
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CookieHolder {
    private static Map<String,String> userCookies; //cookie,userName
-
-    public void addCookie(String cookie, String userName) {
-        userCookies.put(cookie,userName);
+    public CookieHolder() {
+        userCookies = new HashMap<>();
     }
-    public String getUserName(String cookie) {
-        return userCookies.get(cookie);
+
+    public void addCookie(String cookieValue, String cookieName) {
+        userCookies.put(cookieValue,cookieName);
+    }
+    public String getCookieName(String cookieValue) {
+        return userCookies.get(cookieValue);
     }
 }
