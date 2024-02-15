@@ -1,7 +1,5 @@
 package com.college.student.login;
 
-import com.college.student.controller.StudentServlet;
-import com.college.student.controller.oldfiles.ListStudentServlet;
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.service.UserService;
 import com.college.student.service.UserServiceImplementation;
@@ -58,8 +56,6 @@ public class LoginServlet extends HttpServlet {
 
         Gson gson = new Gson();
         String jsonResponse = gson.toJson(this.errorResponse);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         out.println(jsonResponse);
     }

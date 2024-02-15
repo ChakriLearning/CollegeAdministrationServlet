@@ -28,7 +28,7 @@ public class StudentServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
-        String jsonResponse = null;
+        String jsonResponse;
         try {
             logger.info("Request Received to Add Student");
             BufferedReader reader = request.getReader();
@@ -58,11 +58,10 @@ public class StudentServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.info("Request Received to Get the Student Details");
         String rollNo = request.getParameter("rollNo");
-        logger.info("rollNo received {}", rollNo);
-        Gson gson = new Gson();
         String jsonResponse = null;
-
+        Gson gson = new Gson();
         if (rollNo != null) {
+            logger.info("rollNo received {}", rollNo);
             try {
                 Student student = studentService.getStudentByRollNo(Integer.parseInt(rollNo));
                 logger.info("Student Details Received : {}", student);
@@ -78,14 +77,14 @@ public class StudentServlet extends HttpServlet {
                 List<Student> studentList = studentService.listStudents();
                 logger.info("Student List Received : {}", studentList);
                 jsonResponse = gson.toJson(studentList);
+                logger.info("Student List Converted to json : {}", jsonResponse);
             } catch (Exception e) {
                 logger.error("Exception Occurred while Requesting the to List Student Data : ", e);
                 ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
                 jsonResponse = gson.toJson(errorResponse);
             }
         }
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+
         PrintWriter out = response.getWriter();
         out.print(jsonResponse);
         out.flush();

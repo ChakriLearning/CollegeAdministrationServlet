@@ -36,7 +36,8 @@
 <script>
     fetch('http://localhost:8081/CollegeAdministrationServlet/student')
         .then(response => response.json())  //get json data from the server's response
-        .then(data => {//actual json data we received from the server
+        .then(data =>{//actual json data we received from the server
+            console.log(data);
             let studentListDiv = document.getElementById('student-list');
 
             // Creating a table element dynamically;
@@ -48,7 +49,7 @@
             let thead = document.createElement('thead');
             //creating the table row;
             let headerRow = document.createElement('tr');
-           // printing table head,column
+            // printing table head,column
             headerRow.innerHTML = `
                     <th>RollNo</th>
                     <th>Name</th>
@@ -73,7 +74,6 @@
        <a href="#" class="delete-link" data-rollno="${student.rollNo}" data-name="${student.name}" data-age="${student.age}" data-phoneNo="${student.phoneNo}">Delete</a> |
         <a href="GetStudentData.html?rollNo=${student.rollNo}">View</a>
     </td>
-<!--                        <td><a href="DeleteStudentData.html">Delete</a></td>-->
                     `;
                 tbody.appendChild(row);  //appending each row to <tbody> element
             });
@@ -83,19 +83,19 @@
             studentListDiv.appendChild(table);
             // Add event listeners for delete links
             document.querySelectorAll('.delete-link').forEach(link => {
-                link.addEventListener('click', function(event) {
+                link.addEventListener('click', function (event) {
                     event.preventDefault();
                     const rollNo = this.getAttribute('data-rollno');
                     const name = this.getAttribute('data-name');
                     const age = this.getAttribute('data-age');
                     const phoneNo = this.getAttribute('data-phoneNo');
                     if (confirm(`Are you sure you want to delete student with Roll No : ${rollNo}.    having   Name : ${name}    age : ${age}   phoneNo : ${phoneNo}`)) {
-                        window.location.href ="DeleteStudentData.html?rollNo="+rollNo;
+                        window.location.href = "DeleteStudentData.html?rollNo=" + rollNo;
                     }
                 });
             });
         })
-        .catch(error => console.error('Error fetching JSON data:', error));
+        .catch(error => console.error('Error fetching JSON data:',error));
 </script>
 </body>
 </html>
