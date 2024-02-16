@@ -30,7 +30,8 @@
     </style>
 </head>
 <body>
-<div id="userNameDisplay" style="position: absolute; top: 10px; right: 10px;"></div><br>
+<div id="userNameDisplay" style="position: absolute; top: 10px; right: 10px;"></div>
+<br>
 <h1>Add Student</h1>
 <form class="form">
     <label for="rollNo">Student Roll No:</label>
@@ -110,6 +111,23 @@
                 studentListDiv.appendChild(studentDiv);
             });
     });
+    function logout() {
+        // Create a form element
+        const form = document.createElement('form');
+        form.method = 'POST'; // Set method to POST
+        form.action = 'logout'; // Set action URL
+        // Append the form to the body and submit it
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+<br><br>
+<div style="text-align: center;">
+    <!-- Add an onclick event to trigger the logout function -->
+    <a href="#" onclick="logout()"><h3>Logout</h3></a>
+</div>
+<script>
+
 </script>
 </body>
 </html>

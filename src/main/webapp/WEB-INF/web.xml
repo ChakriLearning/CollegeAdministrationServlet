@@ -52,6 +52,14 @@
         <url-pattern>/student</url-pattern>
         <url-pattern>/login</url-pattern>
     </filter-mapping>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>com.college.student.logout.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
 
 <!--    <servlet>-->
 <!--        <servlet-name>controller</servlet-name>-->

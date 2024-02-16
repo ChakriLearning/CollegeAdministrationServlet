@@ -26,31 +26,27 @@
             background-color: #4CAF50; /* Green */
             color: #030000;
         }
-
         .top-right {
-            position: absolute;
-            top: 0;
-            right: 0;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #f0f0f0;
             padding: 10px;
-            background-color: #f80e38;
-            border: 1px solid #930ef3;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
 <div class="top-right">
-    <h4>WelCome : <span id="userNameDisplay"></span></h4>
+    <h4>WelCome : <span id="userNameDisplay"></span></h4><br>
 </div>
-<br>
+<h3><a href="AddStudentData.html">Add New Student</a></h3>
+<br><br>
 <script>
     fetch(`http://localhost:8081/CollegeAdministrationServlet/login`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('userNameDisplay').innerText = `${data.userName}`;
-            const addStudentLink = document.createElement('a');
-            addStudentLink.href = "AddStudentData.html";
-            addStudentLink.innerHTML = "<h3>Add New Student</h3>";
-            document.body.appendChild(addStudentLink);
         })
         .catch(error => console.error('Error fetching JSON data:', error));
 </script>
@@ -121,6 +117,20 @@
             });
         })
         .catch(error => console.error('Error fetching JSON data:', error));
+    function logout() {
+        // Create a form element
+        const form = document.createElement('form');
+        form.method = 'POST'; // Set method to POST
+        form.action = 'logout'; // Set action URL
+        // Append the form to the body and submit it
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
+<br><br>
+<div style="text-align: center;">
+    <!-- Add an onclick event to trigger the logout function -->
+    <a href="#" onclick="logout()"><h3>Logout</h3></a>
+</div>
 </body>
 </html>

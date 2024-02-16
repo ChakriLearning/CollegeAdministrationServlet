@@ -49,7 +49,21 @@
             console.error('Error deleting student:', error);
             // Handle error here
         });
+    function logout() {
+        // Create a form element
+        const form = document.createElement('form');
+        form.method = 'POST'; // Set method to POST
+        form.action = 'logout'; // Set action URL
+        // Append the form to the body and submit it
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
+<br><br>
+<div style="text-align: center;">
+    <!-- Add an onclick event to trigger the logout function -->
+    <a href="#" onclick="logout()"><h3>Logout</h3></a>
+</div>
 </body>
 </html>
 
