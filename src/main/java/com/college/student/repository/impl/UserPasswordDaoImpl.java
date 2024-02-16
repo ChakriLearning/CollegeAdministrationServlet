@@ -27,4 +27,19 @@ public class UserPasswordDaoImpl implements UserPasswordDao {
         }
         return userExists;
     }
+    public boolean isUserNameExists(String userName) {
+        String query = "SELECT * FROM USER_PASSWORD WHERE USER_NAME = ?";
+        boolean userExists = false;
+        try {
+            PreparedStatement preparedStatement = DBConnector.connect().prepareStatement(query);
+            preparedStatement.setString(1, userName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                userExists = true;
+            }
+        } catch (Exception e) {
+            logger.error("Error While Checking UserName : ", e);
+        }
+        return userExists;
+    }
 }

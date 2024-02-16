@@ -5,6 +5,7 @@
     <title>Delete Student</title>
 </head>
 <body>
+<div id="userName" style="position: absolute; top: 10px; right: 10px;"></div>
 <div id="studentInfo">
     <!-- Student information will be displayed here -->
 </div>
@@ -18,7 +19,13 @@
 
     // Get the value of the rollNo parameter
     const rollNo = urlParams.get('rollNo');
-
+    const userName = urlParams.get('username');
+    document.getElementById('userName').innerText = "User : " + userName;
+    // Create the main page link dynamically
+    const mainPageLink = document.createElement('a');
+    mainPageLink.href = "ListStudentDataTable.html?username=" + userName;
+    mainPageLink.innerHTML = "<h3>Main Page</h3>";
+    document.body.appendChild(mainPageLink);
     // Send data to deleteStudentServlet as JSON
     fetch(`http://localhost:8081/CollegeAdministrationServlet/student?rollNo=${rollNo}`, {
         method: 'DELETE',
@@ -28,16 +35,16 @@
     })
         .then(response => response.json())
         .then(data => {
-           const rollNo = data;
-           console.log("rollNo is : ",+ rollNo);
-            console.log(rollNo);
-            window.location.href = `SuccessInfo.html?rollNo=${rollNo}&status=201`;
+            const deletedRollNo = data;
+            console.log("Roll No. deleted:", deletedRollNo);
+            // Display success message directly on the page
+            document.getElementById('studentInfo').innerHTML = `<h3>Student with Roll No ${deletedRollNo} has been successfully deleted.</h3>`;
         })
         .catch(error => {
             console.error('Error deleting student:', error);
             // Handle error here
         });
 </script>
-<a href="ListStudentDataTable.html"><h3>Main Page</h3></a>
 </body>
 </html>
+

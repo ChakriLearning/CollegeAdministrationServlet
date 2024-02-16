@@ -30,6 +30,7 @@
     </style>
 </head>
 <body>
+<div id="userNameDisplay" style="position: absolute; top: 10px; right: 10px;"></div><br>
 <h1>Add Student</h1>
 <form class="form">
     <label for="rollNo">Student Roll No:</label>
@@ -43,6 +44,16 @@
     <input type="submit" value="Add Student">
 </form>
 <script>
+    const queryString = window.location.search;
+    console.log(queryString);
+    let urlSearchParams = new URLSearchParams(queryString);
+    const userName = urlSearchParams.get("username");
+    document.getElementById('userNameDisplay').innerText = "User : " + userName;
+    // Create the main page link dynamically
+    const mainPageLink = document.createElement('a');
+    mainPageLink.href = "ListStudentDataTable.html?username=" + userName;
+    mainPageLink.innerHTML = "<h3>Main Page</h3>";
+    document.body.appendChild(mainPageLink);
     const formData = document.querySelector('.form');
     formData.addEventListener('submit', event => {
         event.preventDefault();
@@ -97,8 +108,6 @@
                 studentListDiv.appendChild(studentDiv);
             });
     });
-
 </script>
-<a href="ListStudentDataTable.html"><h3>Main Page</h3></a>
 </body>
 </html>

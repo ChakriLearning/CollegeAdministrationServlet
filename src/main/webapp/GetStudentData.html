@@ -27,14 +27,24 @@
     </style>
 </head>
 <body>
+<div id="userNameDisplay" style="position: absolute; top: 10px; right: 10px;"></div><br>
 <h1>Student Data : </h1>
-<div id="Student Data"></div>
+<div id="StudentData"></div>
 
 <script>
     const queryString = window.location.search;
     console.log(queryString);
     let urlSearchParams = new URLSearchParams(queryString);
     let rollNo = urlSearchParams.get("rollNo");
+    const userName = urlSearchParams.get("username");
+    document.getElementById('userNameDisplay').innerText = "User : " + userName;
+
+    // Creating the mainPageLink element
+    const mainPageLink = document.createElement('a');
+    mainPageLink.href = "ListStudentDataTable.html?username=" + userName;
+    mainPageLink.innerHTML = "<h3>Main Page</h3>";
+    document.body.appendChild(mainPageLink);
+
     fetch(`http://localhost:8081/CollegeAdministrationServlet/student?rollNo=${rollNo}`, {
         method: 'get',
         headers: {
@@ -43,7 +53,7 @@
     })
         .then(response => response.json())
         .then(data => {
-            let studentListDiv = document.getElementById('Student Data');
+            let studentListDiv = document.getElementById('StudentData');
             let studentDiv = document.createElement('div');
             studentDiv.innerHTML = `
 <table border="1">
@@ -70,6 +80,5 @@
         })
         .catch(error => console.error('Error fetching JSON data:', error));
 </script>
-<a href="ListStudentDataTable.html"><h3>Main Page</h3></a>
 </body>
 </html>

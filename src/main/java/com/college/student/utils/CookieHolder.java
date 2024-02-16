@@ -15,4 +15,11 @@ public class CookieHolder {
         return userCookies.get(cookieValue);
     }
 
+    public static boolean isUserExists(String userName) {
+        for (String values : userCookies.values()) {
+            if (values.equals(userName)) return true;
+        }
+        return false;
+    }
+
 }

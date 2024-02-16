@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
                 logger.info("user cookie added successfully username : {} and cookie : {}", userName, cookieValue);
                 response.addCookie(cookie);
                 logger.info("User Cookie added Successfully to browser : {}", cookie);
-                response.sendRedirect("ListStudentDataTable.html");
+                response.sendRedirect("ListStudentDataTable.html?username="+userName);
                 logger.info("User Redirected to ListStudent Home Page");
                 return;
             } else {
@@ -62,7 +62,13 @@ public class LoginServlet extends HttpServlet {
         out.flush();
     }
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
-        //if(userName)return;
-        //else 401;
+        String userName = request.getParameter("username");
+        if (CookieHolder.isUserExists(userName)) {
+            response.setStatus(HttpServletResponse.SC_CREATED);
+            logger.info("User Exists with name : {}", userName);
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            logger.error("Unauthorized User Found : {}",userName);
+        }
     }
 }

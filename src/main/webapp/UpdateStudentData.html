@@ -29,6 +29,7 @@
     </style>
 </head>
 <body>
+<div id="userNameDisplay" style="position: absolute; top: 10px; right: 10px;"></div><br>
 <h1>Update Student Details</h1>
 <p id="updateInfo">You are updating Roll No: <span id="rollNoDisplay"></span></p>
 <form class="form" method="post">
@@ -45,7 +46,14 @@
     console.log(queryString);
     let urlSearchParams = new URLSearchParams(queryString);
     let rollNo = urlSearchParams.get("rollNo");
+    const userName = urlSearchParams.get("username");
+    document.getElementById('userNameDisplay').innerText = userName;
     document.getElementById('rollNoDisplay').textContent = rollNo;
+    // Create the main page link dynamically
+    const mainPageLink = document.createElement('a');
+    mainPageLink.href = "ListStudentDataTable.html?username=" + userName;
+    mainPageLink.innerHTML = "<h3>Main Page</h3>";
+    document.body.appendChild(mainPageLink);
     fetch(`http://localhost:8081/CollegeAdministrationServlet/student?rollNo=${rollNo}`,{ method :'get'})
         .then(response => response.json())
         .then(data => {
@@ -107,9 +115,6 @@
                 studentListDiv.appendChild(studentDiv);
             });
     });
-
 </script>
-<a href="ListStudentDataTable.html"><h3>Main Page</h3></a>
 </body>
 </html>
-
