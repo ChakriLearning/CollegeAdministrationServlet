@@ -1,9 +1,11 @@
 package com.college.student.login;
 
 import com.college.student.pojo.ErrorResponse;
+import com.college.student.pojo.UserEntity;
 import com.college.student.service.UserService;
 import com.college.student.service.impl.UserServiceImpl;
 import com.college.student.utils.CookieHolder;
+import com.college.student.utils.HttpUtil;
 import com.google.gson.Gson;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
@@ -37,7 +39,7 @@ public class LoginServlet extends HttpServlet {
                 String cookieName = "my_auth_cookie";
                 Cookie cookie = new Cookie(cookieName, cookieValue);
                 logger.info("random cookie generated for new user : {}", cookieValue);
-                CookieHolder.addUserName(cookieValue, userName);
+                CookieHolder.addUserName(cookieValue, new UserEntity(userName));
                 logger.info("user cookie added successfully username : {} and cookie : {}", userName, cookieValue);
                 response.addCookie(cookie);
                 logger.info("User Cookie added Successfully to browser : {}", cookie);
@@ -61,14 +63,31 @@ public class LoginServlet extends HttpServlet {
         out.println(jsonResponse);
         out.flush();
     }
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
-        String userName = request.getParameter("username");
-        if (CookieHolder.isUserExists(userName)) {
-            response.setStatus(HttpServletResponse.SC_CREATED);
-            logger.info("User Exists with name : {}", userName);
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String cookieValue = HttpUtil.getCookieByName("my_auth_cookie", request);
+        logger.info("Value for my_auth_cookie : {}", cookieValue);
+        if (cookieValue != null && CookieHolder.getUserEntity(cookieValue) != null) {
+            logger.info("Authentication Successfully before proceeding chain.doFilter()");
+            UserEntity userEntity = CookieHolder.getUserEntity(cookieValue);
+            Gson gson = new Gson();
+            String jsonResponse = gson.toJson(userEntity);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println(jsonResponse);
+            out.flush();
         } else {
+            ErrorResponse errorResponse = new ErrorResponse(401, "Invalid Login ");
+            logger.error("Invalid Login");
+            Gson gson = new Gson();
+            String jsonResponse = gson.toJson(errorResponse);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            logger.error("Unauthorized User Found : {}",userName);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println(jsonResponse);
+            out.flush();
         }
     }
 }

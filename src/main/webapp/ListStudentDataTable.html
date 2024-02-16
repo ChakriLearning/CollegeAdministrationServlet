@@ -43,27 +43,15 @@
 </div>
 <br>
 <script>
-    const queryString = window.location.search;
-    console.log(queryString);
-    let urlSearchParams = new URLSearchParams(queryString);
-    const userName = urlSearchParams.get("username");
-    document.getElementById('userNameDisplay').innerText = userName;
-    document.getElementById('userNameDisplay').innerText = "User : " + userName;
-    const addStudentLink = document.createElement('a');
-    addStudentLink.href = `AddStudentData.html?username=${encodeURIComponent(userName)}`;
-    addStudentLink.innerHTML = "<h3>Add New Student</h3>";
-    document.body.appendChild(addStudentLink);
-
-    console.log("user exists and Name : " + userName);
-    fetch(`http://localhost:8081/CollegeAdministrationServlet/login?username=${userName}`)
-        .then(response => {
-            if (response.status === 201) {
-                console.log(`User exists and name : ${userName}`);
-            } else if (response.status === 401) {
-                console.error(`User does not exist with userName : ${userName}`);
-            } else {
-                console.error('Error while fetching userName:', response.status, userName);
-            }
+    fetch(`http://localhost:8081/CollegeAdministrationServlet/login`)
+        .then(response => response.json())
+        .then(data => {
+            const userName = data.username;
+            document.getElementById('userNameDisplay').innerText = "User : " + userName;
+            const addStudentLink = document.createElement('a');
+            addStudentLink.href = "AddStudentData.html";
+            addStudentLink.innerHTML = "<h3>Add New Student</h3>";
+            document.body.appendChild(addStudentLink);
         })
         .catch(error => console.error('Error fetching JSON data:', error));
 </script>
@@ -107,9 +95,9 @@
                         <td>${student.age}</td>
                         <td>${student.phoneNo}</td>
                          <td>
-        <a href="UpdateStudentData.html?rollNo=${student.rollNo}&username=${userName}">Edit</a> |
-       <a href="#" class="delete-link" data-rollno="${student.rollNo}" data-name="${student.name}" data-age="${student.age}" data-phoneNo="${student.phoneNo}" data-username="${userName}">Delete</a> |
-        <a href="GetStudentData.html?rollNo=${student.rollNo}&username=${userName}">View</a>
+        <a href="UpdateStudentData.html?rollNo=${student.rollNo}">Edit</a> |
+       <a href="#" class="delete-link" data-rollno="${student.rollNo}" data-name="${student.name}" data-age="${student.age}" data-phoneNo="${student.phoneNo}"">Delete</a> |
+        <a href="GetStudentData.html?rollNo=${student.rollNo}">View</a>
     </td>
                     `;
                 tbody.appendChild(row);  //appending each row to <tbody> element
@@ -128,7 +116,7 @@
                     const phoneNo = this.getAttribute('data-phoneNo');
                     const username = this.getAttribute('username');
                     if (confirm(`Are you sure you want to delete student with Roll No : ${rollNo}.    having   Name : ${name}    age : ${age}   phoneNo : ${phoneNo}`)) {
-                        window.location.href = "DeleteStudentData.html?rollNo=" + rollNo + "&username=" + userName;
+                        window.location.href = "DeleteStudentData.html?rollNo=" + rollNo;
                     }
                 });
             });

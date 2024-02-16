@@ -36,15 +36,20 @@
     console.log(queryString);
     let urlSearchParams = new URLSearchParams(queryString);
     let rollNo = urlSearchParams.get("rollNo");
-    const userName = urlSearchParams.get("username");
-    document.getElementById('userNameDisplay').innerText = "User : " + userName;
 
-    // Creating the mainPageLink element
-    const mainPageLink = document.createElement('a');
-    mainPageLink.href = "ListStudentDataTable.html?username=" + userName;
-    mainPageLink.innerHTML = "<h3>Main Page</h3>";
-    document.body.appendChild(mainPageLink);
 
+    fetch(`http://localhost:8081/CollegeAdministrationServlet/login`)
+        .then(response => response.json())
+        .then(data => {
+            const userName = data.username;
+            document.getElementById('userNameDisplay').innerText = "User : " + userName;
+            // Creating the mainPageLink element
+            const mainPageLink = document.createElement('a');
+            mainPageLink.href = "ListStudentDataTable.html";
+            mainPageLink.innerHTML = "<h3>Main Page</h3>";
+            document.body.appendChild(mainPageLink);
+        })
+        .catch(error => console.error('Error fetching JSON data:', error));
     fetch(`http://localhost:8081/CollegeAdministrationServlet/student?rollNo=${rollNo}`, {
         method: 'get',
         headers: {
