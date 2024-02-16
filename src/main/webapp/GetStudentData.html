@@ -41,8 +41,7 @@
     fetch(`http://localhost:8081/CollegeAdministrationServlet/login`)
         .then(response => response.json())
         .then(data => {
-            const userName = data.username;
-            document.getElementById('userNameDisplay').innerText = "User : " + userName;
+            document.getElementById('userNameDisplay').innerText = ` Welcome : ${data.userName}`;
             // Creating the mainPageLink element
             const mainPageLink = document.createElement('a');
             mainPageLink.href = "ListStudentDataTable.html";

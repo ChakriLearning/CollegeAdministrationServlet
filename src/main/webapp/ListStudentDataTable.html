@@ -46,8 +46,7 @@
     fetch(`http://localhost:8081/CollegeAdministrationServlet/login`)
         .then(response => response.json())
         .then(data => {
-            const userName = data.username;
-            document.getElementById('userNameDisplay').innerText = "User : " + userName;
+            document.getElementById('userNameDisplay').innerText = `${data.userName}`;
             const addStudentLink = document.createElement('a');
             addStudentLink.href = "AddStudentData.html";
             addStudentLink.innerHTML = "<h3>Add New Student</h3>";

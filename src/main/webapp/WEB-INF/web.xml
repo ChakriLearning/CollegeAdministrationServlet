@@ -49,7 +49,7 @@
     </filter>
     <filter-mapping>
         <filter-name>loggingFilter</filter-name>
-        <url-pattern>ListStudentDataTable.html</url-pattern>
+        <url-pattern>/login,/student</url-pattern>
     </filter-mapping>
 
 <!--    <servlet>-->

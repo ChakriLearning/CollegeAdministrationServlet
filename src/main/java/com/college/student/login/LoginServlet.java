@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
                 logger.info("user cookie added successfully username : {} and cookie : {}", userName, cookieValue);
                 response.addCookie(cookie);
                 logger.info("User Cookie added Successfully to browser : {}", cookie);
-                response.sendRedirect("ListStudentDataTable.html?username="+userName);
+                response.sendRedirect("ListStudentDataTable.html");
                 logger.info("User Redirected to ListStudent Home Page");
                 return;
             } else {
