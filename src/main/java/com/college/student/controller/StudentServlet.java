@@ -1,6 +1,5 @@
 package com.college.student.controller;
 
-import com.college.student.controller.oldfiles.UpdateStudentServlet;
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
@@ -17,7 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
+// ctrl + alt + O to remove unused imports
 public class StudentServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(StudentServlet.class);
     private StudentService studentService;

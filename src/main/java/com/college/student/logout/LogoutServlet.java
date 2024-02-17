@@ -3,7 +3,6 @@ package com.college.student.logout;
 import com.college.student.pojo.UserEntity;
 import com.college.student.utils.CookieHolder;
 import com.college.student.utils.HttpUtil;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +15,7 @@ public class LogoutServlet extends HttpServlet {
         UserEntity userEntity = CookieHolder.removeUser(cookieValue);
         String userName = userEntity.getUserName();
         request.getSession(false).removeAttribute(userName);
+        request.getSession(false).invalidate();
         response.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
         response.sendRedirect("LoginPage.html");
     }
