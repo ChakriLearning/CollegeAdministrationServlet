@@ -15,6 +15,7 @@ public class LogoutServlet extends HttpServlet {
         String cookieValue = HttpUtil.getCookieByName("my_auth_cookie", request);
         UserEntity userEntity = CookieHolder.removeUser(cookieValue);
         String userName = userEntity.getUserName();
+        request.getSession(false).removeAttribute(userName);
         response.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
         response.sendRedirect("LoginPage.html");
     }
