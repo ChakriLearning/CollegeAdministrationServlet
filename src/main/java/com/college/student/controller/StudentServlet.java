@@ -62,6 +62,7 @@ public class StudentServlet extends HttpServlet {
         Gson gson = new Gson();
         if (rollNo != null) {
             logger.info("rollNo received {}", rollNo);
+            logger.info("User name : {}",request.getSession(false).getAttribute("username"));
             try {
                 Student student = studentService.getStudentByRollNo(Integer.parseInt(rollNo));
                 logger.info("Student Details Received : {}", student);

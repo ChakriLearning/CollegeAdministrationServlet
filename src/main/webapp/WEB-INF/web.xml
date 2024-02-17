@@ -60,6 +60,15 @@
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>HiddenFormServlet</servlet-name>
+        <servlet-class>com.college.student.login.HiddenFormServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HiddenFormServlet</servlet-name>
+        <url-pattern>/hidden</url-pattern>
+    </servlet-mapping>
 
 <!--    <servlet>-->
 <!--        <servlet-name>controller</servlet-name>-->

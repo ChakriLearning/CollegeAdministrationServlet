@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class AuthenticationFilter implements Filter {
+public class AuthenticationFilter implements Filter {    //mapped to StudentServlet.java
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
     @Override

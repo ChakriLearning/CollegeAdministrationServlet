@@ -7,10 +7,7 @@ import com.college.student.service.impl.UserServiceImpl;
 import com.college.student.utils.CookieHolder;
 import com.college.student.utils.HttpUtil;
 import com.google.gson.Gson;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +29,8 @@ public class LoginServlet extends HttpServlet {
         ErrorResponse errorResponse = null;
         try {
             String userName = request.getParameter("username");
+            HttpSession userSession = request.getSession(true);
+            userSession.setAttribute("username",userName);
             String userPassword = request.getParameter("password");
 
             if (this.userService.authenticateUser(userName, userPassword)) {
