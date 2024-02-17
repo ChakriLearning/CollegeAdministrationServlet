@@ -8,6 +8,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,8 @@ public class AuthenticationFilter implements Filter {    //mapped to StudentServ
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         String cookieValue = HttpUtil.getCookieByName("my_auth_cookie", httpServletRequest);
         logger.info("Value for my_auth_cookie : {}", cookieValue);
-        if (cookieValue != null && CookieHolder.getUserEntity(cookieValue) != null) {
+        HttpSession userSession = httpServletRequest.getSession(false); //gets userSession if already there
+        if (cookieValue != null && CookieHolder.getUserEntity(cookieValue) != null && userSession.getAttribute(cookieValue) != null) {
             logger.info("Authentication Successfully before proceeding chain.doFilter()");
             filterChain.doFilter(servletRequest, servletResponse);
             logger.info("After chain.doFilter()");

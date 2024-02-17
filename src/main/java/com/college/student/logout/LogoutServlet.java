@@ -6,16 +6,19 @@ import com.college.student.utils.HttpUtil;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
 public class LogoutServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cookieValue = HttpUtil.getCookieByName("my_auth_cookie", request);
-        UserEntity userEntity = CookieHolder.removeUser(cookieValue);
-        String userName = userEntity.getUserName();
-        request.getSession(false).removeAttribute(userName);
-        request.getSession(false).invalidate();
+        CookieHolder.removeUser(cookieValue);
+        HttpSession httpSession = request.getSession(false);
+        if (httpSession != null) {
+            httpSession.removeAttribute(cookieValue);
+            httpSession.invalidate();
+        }
         response.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
         response.sendRedirect("LoginPage.html");
     }

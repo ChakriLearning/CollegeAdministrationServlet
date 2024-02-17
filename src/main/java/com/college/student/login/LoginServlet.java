@@ -29,18 +29,20 @@ public class LoginServlet extends HttpServlet {
         ErrorResponse errorResponse = null;
         try {
             String userName = request.getParameter("username");
-            HttpSession userSession = request.getSession(true);
-            userSession.setAttribute("username",userName);
             String userPassword = request.getParameter("password");
-
+            logger.info(" UserName : {}", userName);
             if (this.userService.authenticateUser(userName, userPassword)) {
                 String cookieValue = UUID.randomUUID().toString(); //generating random cookie
-                String cookieName = "my_auth_cookie";
-                Cookie cookie = new Cookie(cookieName, cookieValue);
+                String cookieName = "my_auth_cookie";  //set default cookie value
+                Cookie cookie = new Cookie(cookieName, cookieValue); //creating a cookie with name,value;
                 logger.info("random cookie generated for new user : {}", cookieValue);
-                CookieHolder.addUserName(cookieValue, new UserEntity(userName));
+                UserEntity userEntity = new UserEntity(userName); //userEntity
+                HttpSession userSession = request.getSession(true); //userSession created
+                userSession.setAttribute(cookieValue, userEntity); //added user to userSession
+                logger.info("User Session is set to new user");
+                CookieHolder.addUserName(cookieValue, userEntity);//added user to CookieHolder
                 logger.info("user cookie added successfully username : {} and cookie : {}", userName, cookieValue);
-                response.addCookie(cookie);
+                response.addCookie(cookie); //added cookie to response
                 logger.info("User Cookie added Successfully to browser : {}", cookie);
                 response.sendRedirect("ListStudentDataTable.html");
                 logger.info("User Redirected to ListStudent Home Page");
@@ -62,6 +64,7 @@ public class LoginServlet extends HttpServlet {
         out.println(jsonResponse);
         out.flush();
     }
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cookieValue = HttpUtil.getCookieByName("my_auth_cookie", request);
         logger.info("Value for my_auth_cookie : {}", cookieValue);

@@ -3,12 +3,11 @@ package com.college.student.controller;
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
+import com.college.student.utils.HttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,32 +25,43 @@ public class StudentServlet extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        String jsonResponse;
-        try {
-            logger.info("Request Received to Add Student");
-            BufferedReader reader = request.getReader();
-            StringBuilder jsonStringBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonStringBuilder.append(line);
+        HttpSession userSession = request.getSession(false);
+        String cookieValue = HttpUtil.getCookieByName("my_auth_cookie",request);
+        if (userSession.getAttribute(cookieValue) != null) {
+            logger.info("User Found to be an Admin");
+            Gson gson = new Gson();
+            String jsonResponse;
+            try {
+                logger.info("Request Received to Add Student");
+                BufferedReader reader = request.getReader();
+                StringBuilder jsonStringBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonStringBuilder.append(line);
+                }
+                String jsonString = jsonStringBuilder.toString();
+                logger.info("Request String Received {}", jsonString);
+                Student student = gson.fromJson(jsonString, Student.class);
+                logger.info("Student Object Received : {}", student);
+                studentService.addStudent(student);
+                logger.info("Added Student to DB");
+                jsonResponse = gson.toJson(student);
+            } catch (Exception e) {
+                logger.error("Exception Occurred while Added Student : ", e);
+                ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
+                jsonResponse = gson.toJson(errorResponse);
             }
-            String jsonString = jsonStringBuilder.toString();
-            logger.info("Request String Received {}", jsonString);
-            Student student = gson.fromJson(jsonString, Student.class);
-            logger.info("Student Object Received : {}", student);
-            studentService.addStudent(student);
-            logger.info("Added Student to DB");
-            jsonResponse = gson.toJson(student);
-        } catch (Exception e) {
-            logger.error("Exception Occurred while Added Student : ", e);
-            ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
-            jsonResponse = gson.toJson(errorResponse);
+            response.setContentType("application/json");
+            PrintWriter out = response.getWriter();
+            out.print(jsonResponse);
+            out.flush();
+            return;
         }
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.print(jsonResponse);
-        out.flush();
+        logger.info("Unauthorized Access to Add Student Data");
+        ErrorResponse errorResponse = new ErrorResponse(HttpServletResponse.SC_UNAUTHORIZED,"User Not Found to be an Admin");
+        Gson gson = new Gson();
+        response.getWriter().println(gson.toJson(errorResponse));
+        response.getWriter().flush();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
