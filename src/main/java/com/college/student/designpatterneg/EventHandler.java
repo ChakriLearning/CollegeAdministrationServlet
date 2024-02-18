@@ -58,7 +58,7 @@ public class EventHandler implements Event {
         notifyAllObservers("Total No Of Users are : " + this.userEntityList.size());
         StringBuilder stringBuilder = new StringBuilder();
         for (UserEntity userEntity : this.userEntityList) {
-            stringBuilder.append(userEntity.getUserName());
+            stringBuilder.append(userEntity.getUserName()).append(", ");
         }
         notifyAllObservers("Current LoggedIn Users Are : " + stringBuilder);
     }

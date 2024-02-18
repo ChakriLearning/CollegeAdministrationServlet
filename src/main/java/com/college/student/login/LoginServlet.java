@@ -11,6 +11,8 @@ import com.college.student.service.impl.UserServiceImpl;
 import com.college.student.utils.CookieHolder;
 import com.college.student.utils.HttpUtil;
 import com.google.gson.Gson;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,18 +23,23 @@ import java.util.UUID;
 
 public class LoginServlet extends HttpServlet {
     private final UserService userService;
+    private Event event;
 
     public LoginServlet() {
         this.userService = new UserServiceImpl();
     }
 
+    public void init(ServletConfig servletConfig) {
+        this.event = new EventHandler();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(LoginServlet.class);
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Observer observer = new TotalUsersCount();
+        event.registerObserver(observer);
         logger.info("Login Request Received");
         ErrorResponse errorResponse = null;
-        Event event = new EventHandler();
-        Observer observer = new TotalUsersCount();
         event.registerObserver(observer);
         try {
             String userName = request.getParameter("username");
