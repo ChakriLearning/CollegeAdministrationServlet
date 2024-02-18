@@ -1,11 +1,7 @@
-package com.college.student.designpatterneg;
+package com.college.student.observerpatterneg;
 
-import com.college.student.pojo.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TotalUsersCount implements Observer {
     private static final Logger logger = LoggerFactory.getLogger(TotalUsersCount.class);

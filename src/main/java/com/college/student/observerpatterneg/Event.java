@@ -1,4 +1,4 @@
-package com.college.student.designpatterneg;
+package com.college.student.observerpatterneg;
 
 public interface Event {
     public <T> void registerObserver(T observer);

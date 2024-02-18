@@ -1,4 +1,4 @@
-package com.college.student.designpatterneg;
+package com.college.student.observerpatterneg;
 
 import com.college.student.pojo.UserEntity;
 

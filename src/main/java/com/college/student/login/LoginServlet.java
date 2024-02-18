@@ -1,9 +1,9 @@
 package com.college.student.login;
 
-import com.college.student.designpatterneg.Event;
-import com.college.student.designpatterneg.EventHandler;
-import com.college.student.designpatterneg.Observer;
-import com.college.student.designpatterneg.TotalUsersCount;
+import com.college.student.observerpatterneg.Event;
+import com.college.student.observerpatterneg.EventHandler;
+import com.college.student.observerpatterneg.Observer;
+import com.college.student.observerpatterneg.TotalUsersCount;
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.UserEntity;
 import com.college.student.service.UserService;
@@ -12,7 +12,6 @@ import com.college.student.utils.CookieHolder;
 import com.college.student.utils.HttpUtil;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

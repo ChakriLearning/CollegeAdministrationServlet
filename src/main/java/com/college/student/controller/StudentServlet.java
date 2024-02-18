@@ -1,8 +1,5 @@
 package com.college.student.controller;
 
-import com.college.student.designpatterneg.EventHandler;
-import com.college.student.designpatterneg.Event;
-import com.college.student.designpatterneg.Observer;
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
