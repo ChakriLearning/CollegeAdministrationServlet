@@ -1,5 +1,9 @@
 package com.college.student.login;
 
+import com.college.student.designpatterneg.Event;
+import com.college.student.designpatterneg.EventHandler;
+import com.college.student.designpatterneg.Observer;
+import com.college.student.designpatterneg.TotalUsersCount;
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.UserEntity;
 import com.college.student.service.UserService;
@@ -27,6 +31,9 @@ public class LoginServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.info("Login Request Received");
         ErrorResponse errorResponse = null;
+        Event event = new EventHandler();
+        Observer observer = new TotalUsersCount();
+        event.registerObserver(observer);
         try {
             String userName = request.getParameter("username");
             String userPassword = request.getParameter("password");
@@ -37,6 +44,8 @@ public class LoginServlet extends HttpServlet {
                 Cookie cookie = new Cookie(cookieName, cookieValue); //creating a cookie with name,value;
                 logger.info("random cookie generated for new user : {}", cookieValue);
                 UserEntity userEntity = new UserEntity(userName); //userEntity
+                event.addNewUser(userEntity);
+                event.printLoggedInUsers();
                 HttpSession userSession = request.getSession(true); //userSession created
                 userSession.setAttribute(cookieValue, userEntity); //added user to userSession
                 logger.info("User Session is set to new user");

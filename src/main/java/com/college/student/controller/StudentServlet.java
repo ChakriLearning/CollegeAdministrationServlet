@@ -1,5 +1,8 @@
 package com.college.student.controller;
 
+import com.college.student.designpatterneg.EventHandler;
+import com.college.student.designpatterneg.Event;
+import com.college.student.designpatterneg.Observer;
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
@@ -7,7 +10,10 @@ import com.college.student.utils.HttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
 // ctrl + alt + O to remove unused imports
 public class StudentServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(StudentServlet.class);
@@ -26,7 +33,7 @@ public class StudentServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession userSession = request.getSession(false);
-        String cookieValue = HttpUtil.getCookieByName("my_auth_cookie",request);
+        String cookieValue = HttpUtil.getCookieByName("my_auth_cookie", request);
         if (userSession.getAttribute(cookieValue) != null) {
             logger.info("User Found to be an Admin");
             Gson gson = new Gson();
@@ -58,7 +65,7 @@ public class StudentServlet extends HttpServlet {
             return;
         }
         logger.info("Unauthorized Access to Add Student Data");
-        ErrorResponse errorResponse = new ErrorResponse(HttpServletResponse.SC_UNAUTHORIZED,"User Not Found to be an Admin");
+        ErrorResponse errorResponse = new ErrorResponse(HttpServletResponse.SC_UNAUTHORIZED, "User Not Found to be an Admin");
         Gson gson = new Gson();
         response.getWriter().println(gson.toJson(errorResponse));
         response.getWriter().flush();
@@ -71,7 +78,7 @@ public class StudentServlet extends HttpServlet {
         Gson gson = new Gson();
         if (rollNo != null) {
             logger.info("rollNo received {}", rollNo);
-            logger.info("User name : {}",request.getSession(false).getAttribute("username"));
+            logger.info("User name : {}", request.getSession(false).getAttribute("username"));
             try {
                 Student student = studentService.getStudentByRollNo(Integer.parseInt(rollNo));
                 logger.info("Student Details Received : {}", student);
