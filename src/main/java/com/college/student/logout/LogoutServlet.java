@@ -14,6 +14,7 @@ public class LogoutServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cookieValue = HttpUtil.getCookieByName("my_auth_cookie", request);
         CookieHolder.removeUser(cookieValue);
+        HttpUtil.removeClientCookieFromBrowser("my_auth_cookie",request);
         HttpSession httpSession = request.getSession(false);
         if (httpSession != null) {
             httpSession.removeAttribute(cookieValue);

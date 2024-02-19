@@ -20,4 +20,16 @@ public class HttpUtil {
         }
         return null;
     }
+    public static boolean removeClientCookieFromBrowser(String cookieName,HttpServletRequest request) {
+        Cookie[] cookiesFromRequest = request.getCookies();
+        if (cookiesFromRequest != null) {
+            for (Cookie cookie : cookiesFromRequest) {
+                if (cookie.getName().equals(cookieName)) {
+                    cookie.setMaxAge(0);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

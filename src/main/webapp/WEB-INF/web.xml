@@ -69,6 +69,14 @@
         <servlet-name>HiddenFormServlet</servlet-name>
         <url-pattern>/hidden</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>FileUplaod</servlet-name>
+        <servlet-class>com.college.student.fileupload.FileUploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FileUplaod</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
 
 <!--    <servlet>-->
 <!--        <servlet-name>controller</servlet-name>-->

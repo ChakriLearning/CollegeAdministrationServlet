@@ -1,19 +1,43 @@
-//package com.college.student.fileupload;
-//
-//import com.oreilly.servlet.MultipartRequest;
-//import jakarta.servlet.annotation.WebServlet;
-//import jakarta.servlet.http.HttpServlet;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//
-//@WebServlet("/upload")
-//public class FileUploadServlet extends HttpServlet {
-//    public void doPost(HttpServletRequest request, HttpServletResponse response) {
-//        String directoryPath = "C:/Users/chakr/IdeaProjects/CollegeAdministrationServlet";
-//        int maxFileSize = 10 * 1024 * 1024;
-//        String encoding = "UTF-8";
-//        MultipartRequest multipartRequest = new MultipartRequest(request, directoryPath, maxFileSize,encoding);
-//        multipartRequest.getFile("file");
-//
-//    }
-//}
+package com.college.student.fileupload;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
+        maxFileSize = 1024 * 1024 * 10,       // 10MB
+        maxRequestSize = 1024 * 1024 * 50     // 50MB
+)
+public class FileUploadServlet extends HttpServlet {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String directoryPath = "C:\\Users\\chakr\\IdeaProjects\\CollegeAdministrationServlet\\";
+        int maxFileSize = 10 * 1024 * 1024; //10MB
+        String encoding = "UTF-8";
+        Part part = request.getPart("screenshot");
+        String fileName = part.getSubmittedFileName();
+        part.write(directoryPath + fileName);
+        String relativeFilePath = request.getContextPath() + "/uploads/" + fileName;
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+        out.println("<!DOCTYPE html>");
+        out.println("<html lang=\"en\">");
+        out.println("<head>");
+        out.println("<meta charset=\"UTF-8\">");
+        out.println("<title>File Upload</title>");
+        out.println("</head>");
+        out.println("<body>");
+        out.println("<h2>File Uploaded Successfully</h2>");
+        out.println("<p>File: " + fileName + " and " + fileName + "is uploaded successfully " + part + "</p> ");
+        out.println("<img src=\"" + relativeFilePath + "\" alt=\"Uploaded Screenshot\">");
+        out.println("</body>");
+        out.println("</html>");
+    }
+}
