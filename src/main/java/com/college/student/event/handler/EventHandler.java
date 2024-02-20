@@ -41,6 +41,6 @@ public class EventHandler {
     public void publishEvent(GetStudentEvent event) {
         event.onEvent();
     }
-    
+
 
 }

@@ -26,7 +26,7 @@ public class FileServlet extends HttpServlet {
         String relativeFilePath = directoryPath + "\\" + fileName;
         part.write(directoryPath + fileName);
         PrintWriter out = response.getWriter();
-        response.sendRedirect("FileUploadSuccess.html");
+        response.sendRedirect("DownloadFile.html");
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
