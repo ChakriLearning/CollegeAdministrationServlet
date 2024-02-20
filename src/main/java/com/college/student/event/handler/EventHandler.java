@@ -1,12 +1,13 @@
 package com.college.student.event.handler;
 
-import com.college.student.event.*;
+import com.college.student.event.AddStudentEvent;
+import com.college.student.event.DeleteStudentEvent;
+import com.college.student.event.GetStudentEvent;
+import com.college.student.event.UpdateStudentEvent;
 import com.college.student.listener.Listener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EventHandler {
     private static final List<Listener> listenerList = new ArrayList<>();
@@ -40,9 +41,6 @@ public class EventHandler {
     public void publishEvent(GetStudentEvent event) {
         event.onEvent();
     }
-
-    public void publishEvent(GetAllStudentEvent event) {
-
-    }
+    
 
 }

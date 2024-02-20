@@ -1,7 +1,5 @@
 package com.college.student.logout;
 
-import com.college.student.observer.listener;
-import com.college.student.observer.TotalUsersCount;
 import com.college.student.pojo.UserEntity;
 import com.college.student.utils.CookieHolder;
 import com.college.student.utils.HttpUtil;
@@ -17,7 +15,6 @@ public class LogoutServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cookieValue = HttpUtil.getCookieByName("my_auth_cookie", request);
         UserEntity userEntity = CookieHolder.removeUser(cookieValue);
-        listener listener = new TotalUsersCount();
         HttpUtil.removeClientCookieFromBrowser("my_auth_cookie", request, response);
         HttpSession httpSession = request.getSession(false);
         if (httpSession != null) {

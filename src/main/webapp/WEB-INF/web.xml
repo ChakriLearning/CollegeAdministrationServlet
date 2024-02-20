@@ -70,13 +70,17 @@
         <url-pattern>/hidden</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>FileUplaod</servlet-name>
-        <servlet-class>com.college.student.fileupload.FileUploadServlet</servlet-class>
+        <servlet-name>File</servlet-name>
+        <servlet-class>com.college.student.file.FileServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>FileUplaod</servlet-name>
-        <url-pattern>/upload</url-pattern>
+        <servlet-name>File</servlet-name>
+        <url-pattern>/file</url-pattern>
     </servlet-mapping>
+    <context-param>
+        <param-name>filePath</param-name>
+        <param-value>C:\\Users\chakr\\IdeaProjects\\CollegeAdministrationServlet</param-value>
+    </context-param>
 
 <!--    <servlet>-->
 <!--        <servlet-name>controller</servlet-name>-->
