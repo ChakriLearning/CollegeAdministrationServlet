@@ -1,5 +1,12 @@
 package com.college.student.controller;
 
+import com.college.student.event.AddStudentEvent;
+import com.college.student.event.DeleteStudentEvent;
+import com.college.student.event.GetStudentEvent;
+import com.college.student.event.UpdateStudentEvent;
+import com.college.student.event.handler.EventHandler;
+import com.college.student.listener.Listener;
+import com.college.student.listener.concreteclass.AddStudentEventListener;
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
@@ -23,12 +30,15 @@ import java.util.List;
 public class StudentServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(StudentServlet.class);
     private StudentService studentService;
-
+private EventHandler eventHandler;
     public void init(ServletConfig servletConfig) {
         this.studentService = new StudentService(servletConfig.getInitParameter("storageType"));
+        this.eventHandler = new EventHandler();
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Listener listener = new AddStudentEventListener();
+        eventHandler.registerListener(listener);
         HttpSession userSession = request.getSession(false);
         String cookieValue = HttpUtil.getCookieByName("my_auth_cookie", request);
         if (userSession.getAttribute(cookieValue) != null) {
@@ -48,6 +58,7 @@ public class StudentServlet extends HttpServlet {
                 Student student = gson.fromJson(jsonString, Student.class);
                 logger.info("Student Object Received : {}", student);
                 studentService.addStudent(student);
+                eventHandler.publishEvent(new AddStudentEvent(student));
                 logger.info("Added Student to DB");
                 jsonResponse = gson.toJson(student);
             } catch (Exception e) {
@@ -80,6 +91,7 @@ public class StudentServlet extends HttpServlet {
                 Student student = studentService.getStudentByRollNo(Integer.parseInt(rollNo));
                 logger.info("Student Details Received : {}", student);
                 jsonResponse = gson.toJson(student);
+                eventHandler.publishEvent(new GetStudentEvent(student));
             } catch (Exception e) {
                 logger.error("Exception Occurred while Requested to Get Student data : ", e);
                 ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
@@ -119,6 +131,7 @@ public class StudentServlet extends HttpServlet {
             logger.info("Request to Update the Student : {}", jsonStringBuilder);
             Student student = gson.fromJson(jsonStringBuilder.toString(), Student.class);
             student = studentService.updateStudentDetailsByRollNo(student);
+            eventHandler.publishEvent(new UpdateStudentEvent(student));
             logger.info("Request Successfully Completed for Update for Student {}", student);
             jsonResponse = gson.toJson(student);
             logger.info("Generated the Json Response : {}", jsonResponse);
@@ -145,6 +158,7 @@ public class StudentServlet extends HttpServlet {
             rollNo = Integer.parseInt(request.getParameter("rollNo"));
             logger.info("Successfully Received Student RollNo : {}", rollNo);
             Student student = studentService.deleteStudentByRollNo(rollNo);
+            eventHandler.publishEvent(new DeleteStudentEvent(student));
             jsonResponse = gson.toJson(rollNo);
             logger.info("Successfully Deleted the Student : {}", student);
         } catch (Exception e) {

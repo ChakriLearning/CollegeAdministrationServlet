@@ -23,21 +23,9 @@ public class FileUploadServlet extends HttpServlet {
         String encoding = "UTF-8";
         Part part = request.getPart("screenshot");
         String fileName = part.getSubmittedFileName();
-        part.write(directoryPath + fileName);
+        part.write(directoryPath);
         String relativeFilePath = directoryPath + "\\" + fileName;
         PrintWriter out = response.getWriter();
-        response.setContentType("text/html");
-        out.println("<!DOCTYPE html>");
-        out.println("<html lang=\"en\">");
-        out.println("<head>");
-        out.println("<meta charset=\"UTF-8\">");
-        out.println("<title>File Upload</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h2>File Uploaded Successfully</h2>");
-        out.println("<p>File: " + fileName + " and " + fileName + "is uploaded successfully " + part + "</p> ");
-        out.println("<img src=" + relativeFilePath + " alt=\"Uploaded Screenshot\">");
-        out.println("</body>");
-        out.println("</html>");
+
     }
 }
