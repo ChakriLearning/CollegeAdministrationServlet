@@ -3,63 +3,40 @@ package com.college.student.observerpatterneg;
 import com.college.student.pojo.UserEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventHandler implements Event {
-    private final List<Observer> listOfObservers;
-    private final List<UserEntity> userEntityList;
+    private final Map<String, Observer> observers = new HashMap<>();
 
-    public EventHandler() {
-        this.listOfObservers = new ArrayList<>();
-        this.userEntityList = new ArrayList<>();
-    }
-
-    @Override  //method to register the observer
-    public <T> void registerObserver(T observer) {
-        if (observer == null) throw new NullPointerException("Null Observer");
-        synchronized (EventHandler.class) {
-            if (!this.listOfObservers.contains((Observer) observer)) this.listOfObservers.add((Observer) observer);
+    @Override
+    public <T> void registerObserver(T eventType, T observer) {
+        if (!observers.containsValue((Observer) observer)) {
+            observers.put((String) eventType, (Observer) observer);
         }
+
     }
 
     @Override
-    public <T> void unregisterObserver(T observer) {
-        if (observer == null) throw new NullPointerException("Null Observer");
-        synchronized (EventHandler.class) {
-            this.listOfObservers.remove((Observer) observer);
-        }
+    public <T> void unregisterObserver(T eventType, T observer) {
+        observers.remove((String) eventType,(Observer) observer);
     }
 
     @Override
     public <T> void notifyAllObservers(T message) {
-        List<Observer> observers = null;
-        synchronized (EventHandler.class) {
-            observers = new ArrayList<>(this.listOfObservers);
-            for (Observer observer : observers) {
-                observer.updateObserver(message);
+        for (Map.Entry<String,Observer> entry : observers.entrySet()) {
+            Observer observer = entry.getValue();
+            observer.updateObserver(message);
+        }
+    }
+
+    @Override
+    public <T> void notifyObserverForSpecificEvent(T eventType, T observer, T object) {
+        for (Map.Entry<String,Observer> entry : observers.entrySet()) {
+            if (entry.getKey().equals(eventType) && entry.getValue().equals(observer)) {
+                entry.getValue().eventFired(object);
             }
         }
-    }
-
-    @Override
-    public <T> void addNewUser(T user) {
-        if (!this.userEntityList.contains((UserEntity) user)) {
-            this.userEntityList.add((UserEntity) user);
-        }
-    }
-
-    @Override
-    public <T> void removeUser(T user) {
-        this.userEntityList.remove((UserEntity) user);
-    }
-
-    @Override
-    public void printLoggedInUsers() {
-        notifyAllObservers("Total No Of Users are : " + this.userEntityList.size());
-        StringBuilder stringBuilder = new StringBuilder();
-        for (UserEntity userEntity : this.userEntityList) {
-            stringBuilder.append(userEntity.getUserName()).append(", ");
-        }
-        notifyAllObservers("Current LoggedIn Users Are : " + stringBuilder);
     }
 }

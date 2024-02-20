@@ -24,7 +24,7 @@ public class FileUploadServlet extends HttpServlet {
         Part part = request.getPart("screenshot");
         String fileName = part.getSubmittedFileName();
         part.write(directoryPath + fileName);
-        String relativeFilePath = request.getContextPath() + "/uploads/" + fileName;
+        String relativeFilePath = directoryPath + "\\" + fileName;
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
         out.println("<!DOCTYPE html>");
@@ -36,7 +36,7 @@ public class FileUploadServlet extends HttpServlet {
         out.println("<body>");
         out.println("<h2>File Uploaded Successfully</h2>");
         out.println("<p>File: " + fileName + " and " + fileName + "is uploaded successfully " + part + "</p> ");
-        out.println("<img src=\"" + relativeFilePath + "\" alt=\"Uploaded Screenshot\">");
+        out.println("<img src=" + relativeFilePath + " alt=\"Uploaded Screenshot\">");
         out.println("</body>");
         out.println("</html>");
     }

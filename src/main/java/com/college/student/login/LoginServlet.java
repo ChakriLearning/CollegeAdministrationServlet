@@ -27,7 +27,6 @@ public class LoginServlet extends HttpServlet {
     public LoginServlet() {
         this.userService = new UserServiceImpl();
     }
-
     public void init(ServletConfig servletConfig) {
         this.event = new EventHandler();
     }
@@ -35,11 +34,10 @@ public class LoginServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(LoginServlet.class);
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Observer observer = new TotalUsersCount();
-        event.registerObserver(observer);
         logger.info("Login Request Received");
         ErrorResponse errorResponse = null;
-        event.registerObserver(observer);
+        Observer observer = new TotalUsersCount();  //created a new Observer;
+        event.registerObserver("countUsers",observer); //register users for countUsers eventType;
         try {
             String userName = request.getParameter("username");
             String userPassword = request.getParameter("password");
@@ -50,8 +48,7 @@ public class LoginServlet extends HttpServlet {
                 Cookie cookie = new Cookie(cookieName, cookieValue); //creating a cookie with name,value;
                 logger.info("random cookie generated for new user : {}", cookieValue);
                 UserEntity userEntity = new UserEntity(userName); //userEntity
-                event.addNewUser(userEntity);
-                event.printLoggedInUsers();
+                event.notifyObserverForSpecificEvent("countUsers",observer,userEntity);
                 HttpSession userSession = request.getSession(true); //userSession created
                 userSession.setAttribute(cookieValue, userEntity); //added user to userSession
                 logger.info("User Session is set to new user");
