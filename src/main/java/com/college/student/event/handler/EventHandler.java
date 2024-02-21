@@ -9,7 +9,23 @@ import java.util.List;
 import java.util.Map;
 
 public class EventHandler {
-    private final Map<Class<? extends IEvent>, List<IEventListener>> listeners = new HashMap<>();  // "?" is a wildcard means anytype here anytype of class or child class of IEvent can be accepted; // for specific eventType we have a listOf Listeners;
+    private static final Map<Class<? extends IEvent>, List<IEventListener>> listeners = new HashMap<>();  // "?" is a wildcard means anytype here anytype of class or child class of IEvent can be accepted; // for specific eventType we have a listOf Listeners;
+    private static volatile EventHandler instance;
+
+    public EventHandler() {
+
+    }
+
+    public static EventHandler getInstance() {
+        if (instance == null) {
+            synchronized (EventHandler.class) {
+                if (instance == null) {
+                    instance = new EventHandler();
+                }
+            }
+        }
+        return instance;
+    }
 
     public void registerListener(Class<? extends IEvent> eventType, IEventListener listener) {
         List<IEventListener> iEventListeners = listeners.getOrDefault(eventType, new ArrayList<>());  //retrieves the value of eventType(key) if key is exists else it returns the default (new ArrayList<>)
@@ -22,11 +38,17 @@ public class EventHandler {
         listeners.getOrDefault(eventType, new ArrayList<>()).remove(listener);
     }
 
-    public void publishEvent(IEvent event) {
+    public void publishEvent(IEvent event, boolean sync) {
         List<IEventListener> listenerList = listeners.get(event.getClass());  //getClass() returns runtime class of the event obj suppose IEvent event = new AddStudentEventListener() then it'll return the AddStudentEventListener class;
         if (listenerList != null) {
             for (IEventListener iEventListener : listenerList) {
-                notifyListeners(event, iEventListener);
+                if (sync) {
+                    synchronized (this) {
+                        new Thread(() -> notifyListeners(event, iEventListener)).start();
+                    }
+                } else {
+                    notifyListeners(event, iEventListener);
+                }
             }
         }
     }

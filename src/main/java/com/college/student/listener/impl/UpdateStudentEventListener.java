@@ -8,12 +8,13 @@ import org.slf4j.LoggerFactory;
 
 public class UpdateStudentEventListener implements IEventListener {
     private static final Logger logger = LoggerFactory.getLogger(UpdateStudentEventListener.class);
+
     @Override
     public void onEvent(IEvent event) {
         if (event instanceof UpdateStudentEvent) {
             UpdateStudentEvent updateStudentEvent = (UpdateStudentEvent) event;
-            logger.info("Student With rollNo : {}",updateStudentEvent.getStudent().getRollNo() + " has been Updaed");
-            logger.info("Source : {}",updateStudentEvent.getSource());
+            logger.info("Student With rollNo : {}", updateStudentEvent.getStudent().getRollNo() + " has been Updated");
+            logger.info("Source : {}", updateStudentEvent.getSource());
         }
     }
 }

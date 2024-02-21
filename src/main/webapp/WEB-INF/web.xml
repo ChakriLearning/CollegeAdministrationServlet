@@ -82,6 +82,10 @@
         <param-value>C:\\Users\chakr\\IdeaProjects\\CollegeAdministrationServlet</param-value>
     </context-param>
 
+    <listener>
+        <listener-class>com.college.student.contextlistener.ContextForRegisterListeners</listener-class>
+    </listener>
+
 <!--    <servlet>-->
 <!--        <servlet-name>controller</servlet-name>-->
 <!--        <servlet-class>com.college.student.controller.oldfiles.AdmissionControllerServlet</servlet-class>-->
