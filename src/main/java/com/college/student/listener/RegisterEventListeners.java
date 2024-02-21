@@ -1,4 +1,4 @@
-package com.college.student.contextlistener;
+package com.college.student.listener;
 
 import com.college.student.event.handler.EventHandler;
 import com.college.student.event.impl.*;

@@ -23,14 +23,14 @@ public class FileServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(FileServlet.class);
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String directoryPath = "C:\\Users\\chakr\\IdeaProjects\\CollegeAdministrationServlet\\";
+        String directoryPath = "D:\\IdeaProjects-savedFiles\\";
         try {
             Part part = request.getPart("screenshot");
             String fileName = part.getSubmittedFileName();
             getServletContext().setAttribute("fileName", fileName);
             logger.info("Submitted File Name : {}", fileName + " Added to Context Level Attribute");
             part.write(directoryPath + fileName);
-            logger.info("Saved File name to Disck");
+            logger.info("Saved File name to Disk");
             response.sendRedirect("DownloadFile.html");
         } catch (ServletException | IOException e) {
             logger.info("Exception Occurred While Uploading File: {}", e.getMessage());
@@ -45,7 +45,7 @@ public class FileServlet extends HttpServlet {
         try {
             String fileName = (String) getServletContext().getAttribute("fileName");
             logger.info("File Name Retrieved From Context : {}", fileName);
-            File file = new File("C:\\Users\\chakr\\IdeaProjects\\CollegeAdministrationServlet\\" + fileName);
+            File file = new File("D:\\IdeaProjects-savedFiles\\" + fileName);
             response.setContentType("application/octet-stream");
             OutputStream out = response.getOutputStream();
             FileInputStream in = new FileInputStream(file);
