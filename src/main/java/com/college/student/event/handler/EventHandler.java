@@ -28,14 +28,31 @@ public class EventHandler {
     }
 
     public void registerListener(Class<? extends IEvent> eventType, IEventListener listener) {
-        List<IEventListener> iEventListeners = listeners.getOrDefault(eventType, new ArrayList<>());  //retrieves the value of eventType(key) if key is exists else it returns the default (new ArrayList<>)
-        iEventListeners.add(listener);  //add the specific listener to the list of eventListeners and
-        listeners.put(eventType, iEventListeners);
+//        List<IEventListener> iEventListeners = listeners.getOrDefault(eventType, new ArrayList<>());  //retrieves the value of eventType(key) if key is exists else it returns the default (new ArrayList<>)
+//        iEventListeners.add(listener);  //add the specific listener to the list of eventListeners and
+//        listeners.put(eventType, iEventListeners);
+        List<IEventListener> iEventListeners = null;
+        if (listeners.get(eventType) != null) {
+            iEventListeners = listeners.get(eventType);
+            iEventListeners.add(listener);
+        } else {
+            iEventListeners = new ArrayList<>();
+            iEventListeners.add(listener);
+        }
     }
 
     public void unRegisterListener(Class<? extends IEvent> eventType, IEventListener listener) {
-        //this method retrieves the value(here List<IEventListener>) of eventType, and we removed the specific listener from that list;
-        listeners.getOrDefault(eventType, new ArrayList<>()).remove(listener);
+//        //this method retrieves the value(here List<IEventListener>) of eventType, and we removed the specific listener from that list;
+//        listeners.getOrDefault(eventType, new ArrayList<>()).remove(listener);
+//        List<IEventListener> iEventListeners = null;
+//        if (listeners.get(eventType) != null) {
+//            iEventListeners = listeners.get(eventType);
+//            iEventListeners.remove(listener);
+//        }
+        List<IEventListener> iEventListeners = listeners.get(eventType);
+        if (iEventListeners != null) {
+            iEventListeners.remove(listener);
+        }
     }
 
     public void publishEvent(IEvent event, boolean sync) {

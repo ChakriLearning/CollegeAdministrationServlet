@@ -12,7 +12,7 @@ public class DeleteStudentEventListener implements IEventListener {
     private static final Logger logger = LoggerFactory.getLogger(DeleteStudentEventListener.class);
 
     @Override
-    public void onEvent(IEvent event) {
+    public <Event> void onEvent(Event event) {
         if (event instanceof DeleteStudentEvent) {
             DeleteStudentEvent deleteStudentEvent = (DeleteStudentEvent) event;
             logger.info("Student with RollNo {}",deleteStudentEvent.getStudent().getRollNo() + " has been Deleted");

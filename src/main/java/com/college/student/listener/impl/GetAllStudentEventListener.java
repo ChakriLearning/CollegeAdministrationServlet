@@ -15,7 +15,7 @@ public class GetAllStudentEventListener implements IEventListener {
     private static final Logger logger = LoggerFactory.getLogger(GetAllStudentEventListener.class);
 
     @Override
-    public void onEvent(IEvent event) {
+    public <Event> void onEvent(Event event) {
         if (event instanceof GetAllStudentEvent) {
             GetAllStudentEvent getAllStudentEvent = (GetAllStudentEvent) event;
             List<Student> studentList = getAllStudentEvent.getStudentList();

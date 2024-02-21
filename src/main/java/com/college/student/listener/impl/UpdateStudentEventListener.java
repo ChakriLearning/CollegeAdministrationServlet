@@ -10,7 +10,7 @@ public class UpdateStudentEventListener implements IEventListener {
     private static final Logger logger = LoggerFactory.getLogger(UpdateStudentEventListener.class);
 
     @Override
-    public void onEvent(IEvent event) {
+    public <Event> void onEvent(Event event) {
         if (event instanceof UpdateStudentEvent) {
             UpdateStudentEvent updateStudentEvent = (UpdateStudentEvent) event;
             logger.info("Student With rollNo : {}", updateStudentEvent.getStudent().getRollNo() + " has been Updated");

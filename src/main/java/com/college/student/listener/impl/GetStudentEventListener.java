@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public class GetStudentEventListener implements IEventListener {
     private static final Logger logger = LoggerFactory.getLogger(GetStudentEventListener.class);
     @Override
-    public void onEvent(IEvent event) {
+    public <Event> void onEvent(Event event) {
         if (event instanceof GetStudentEvent) {
             GetStudentEvent getStudentEvent = (GetStudentEvent) event;
             logger.info("Student Data Received : {}",getStudentEvent.getStudent());
