@@ -83,7 +83,7 @@
     </context-param>
 
     <listener>
-        <listener-class>com.college.student.contextlistener.ContextForRegisterListeners</listener-class>
+        <listener-class>com.college.student.contextlistener.RegisterEventListeners</listener-class>
     </listener>
 
 <!--    <servlet>-->

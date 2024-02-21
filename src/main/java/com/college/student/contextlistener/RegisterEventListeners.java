@@ -6,7 +6,7 @@ import com.college.student.listener.impl.*;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 
-public class ContextForRegisterListeners implements ServletContextListener {
+public class RegisterEventListeners implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         EventHandler.getInstance().registerListener(AddStudentEvent.class, new AddStudentEventListener());

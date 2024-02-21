@@ -1,21 +1,17 @@
 package com.college.student.listener.impl;
 
-import com.college.student.event.IEvent;
-import com.college.student.event.handler.EventHandler;
 import com.college.student.event.impl.AddStudentEvent;
 import com.college.student.listener.IEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AddStudentEventListener implements IEventListener {
+public class AddStudentEventListener implements IEventListener<AddStudentEvent> {
     private static final Logger logger = LoggerFactory.getLogger(AddStudentEventListener.class);
+
     @Override
-    public <Event> void onEvent(Event event) {
-        if (event instanceof AddStudentEvent) {  //return true if event is an instance of AddStudentEvent - IEvent event = new AddStudentEvent so event is an instance of AddStudentEvent;
-            AddStudentEvent addStudentEvent = (AddStudentEvent) event; // we have data in AddStudentEvent, so we need to access this
-            logger.info("New Student Added");
-            logger.info("Student Details : {}", addStudentEvent.getStudent());
-            logger.info("Source : {}", addStudentEvent.getSource());
-        }
+    public void onEvent(AddStudentEvent addStudentEvent) {
+        logger.info("New Student Added");
+        logger.info("Student Details : {}", addStudentEvent.getStudent());
+        logger.info("Source : {}", addStudentEvent.getSource());
     }
 }
