@@ -9,10 +9,6 @@ import org.slf4j.LoggerFactory;
 
 public class AddStudentEventListener implements IEventListener {
     private static final Logger logger = LoggerFactory.getLogger(AddStudentEventListener.class);
-//    static {
-//        EventHandler.getInstance().registerListener(AddStudentEvent.class, new AddStudentEventListener());
-//    }
-
     @Override
     public void onEvent(IEvent event) {
         if (event instanceof AddStudentEvent) {  //return true if event is an instance of AddStudentEvent - IEvent event = new AddStudentEvent so event is an instance of AddStudentEvent;
