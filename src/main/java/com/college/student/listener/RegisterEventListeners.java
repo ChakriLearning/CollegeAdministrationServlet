@@ -14,5 +14,7 @@ public class RegisterEventListeners implements ServletContextListener {
         EventHandler.getInstance().registerListener(GetAllStudentEvent.class, new GetAllStudentEventListener());
         EventHandler.getInstance().registerListener(GetStudentEvent.class, new GetStudentEventListener());
         EventHandler.getInstance().registerListener(UpdateStudentEvent.class, new UpdateStudentEventListener());
+
+        EventHandler.invokeListeners();
     }
 }

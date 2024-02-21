@@ -14,9 +14,7 @@ public class GetAllStudentEventListener implements IEventListener<GetAllStudentE
     @Override
     public void onEvent(GetAllStudentEvent getAllStudentEvent) {
         List<Student> studentList = getAllStudentEvent.getStudentList();
-        logger.info("Received Request for Students List");
-        logger.info("Student List are : ");
-        for (Student student : studentList) logger.info(String.valueOf(student));
-        logger.info("Source : {}", getAllStudentEvent.getSource());
+        logger.info("GetAllStudentEventListener Invoked with Source : {}",getAllStudentEvent.getSource());
+        logger.info("Student List is : {}", studentList);
     }
 }

@@ -85,7 +85,7 @@ public class StudentServlet extends HttpServlet {
             try {
                 Student student = studentService.getStudentByRollNo(Integer.parseInt(rollNo));
                 logger.info("Student Details Received : {}", student);
-                eventHandler.publishEvent(new GetStudentEvent(this.getClass(), student),true);
+                eventHandler.publishEvent(new GetStudentEvent(this.getClass(), student),false);
                 jsonResponse = gson.toJson(student);
             } catch (Exception e) {
                 logger.error("Exception Occurred while Requested to Get Student data : ", e);

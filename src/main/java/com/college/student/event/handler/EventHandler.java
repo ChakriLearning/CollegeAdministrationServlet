@@ -3,15 +3,13 @@ package com.college.student.event.handler;
 import com.college.student.event.IEvent;
 import com.college.student.listener.IEventListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EventHandler {
     private static final Map<Class<? extends IEvent>, List<IEventListener<? extends IEvent>>> listeners = new HashMap<>();  // "?" is a wildcard means anytype here anytype of class or child class of IEvent can be accepted; // for specific eventType we have a listOf Listeners;
     private static volatile EventHandler instance;
-
+    private static final Queue<IEvent> iEventQueue = new LinkedList<>();
+private boolean sync;
     public EventHandler() {
 
     }
@@ -49,23 +47,30 @@ public class EventHandler {
     }
 
     public void publishEvent(IEvent event, boolean sync) {
+        this.sync = sync;
+        iEventQueue.offer(event);
 
-        List<IEventListener<? extends IEvent>> listenerList = listeners.get(event.getClass());  //getClass() returns runtime class of the event obj suppose IEvent event = new AddStudentEventListener() then it'll return the AddStudentEventListener class;
-        if (listenerList != null) {
-            for (IEventListener<? extends IEvent> iEventListener : listenerList) {
-                if (sync) {
-                    synchronized (this) {
+    }
+
+
+    public static void invokeListeners() {
+        while (!iEventQueue.isEmpty()) {
+            IEvent event = iEventQueue.peek();
+            List<IEventListener<? extends IEvent>> listenerList = listeners.get(event.getClass());
+            if (listenerList != null) {
+                for (IEventListener<? extends IEvent> iEventListener : listenerList) {
+                    if (getInstance().sync) {
+                        notifyListeners(event, iEventListener);
+                    } else {
                         new Thread(() -> notifyListeners(event, iEventListener)).start();
                     }
-                } else {
-                    notifyListeners(event, iEventListener);
                 }
             }
         }
     }
 
-    public  void notifyListeners(IEvent event, IEventListener iEventListener) {
-        iEventListener.onEvent(event);
+    private static void notifyListeners(IEvent event, IEventListener listener) {
+        listener.onEvent(event);
     }
 
 }
