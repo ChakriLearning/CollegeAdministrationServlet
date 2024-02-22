@@ -16,21 +16,16 @@ public class RegisterEventListeners implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         logger.info("Context Initialized");
-        EventHandler.getInstance().registerListener(AddStudentEvent.class, new AddStudentEventListener());
-        EventHandler.getInstance().registerListener(DeleteStudentEvent.class, new DeleteStudentEventListener());
-        EventHandler.getInstance().registerListener(GetAllStudentEvent.class, new GetAllStudentEventListener());
-        EventHandler.getInstance().registerListener(GetStudentEvent.class, new GetStudentEventListener());
-        EventHandler.getInstance().registerListener(UpdateStudentEvent.class, new UpdateStudentEventListener());
+        EventHandler.registerListener(AddStudentEvent.class, new AddStudentEventListener());
+        EventHandler.registerListener(DeleteStudentEvent.class, new DeleteStudentEventListener());
+        EventHandler.registerListener(GetAllStudentEvent.class, new GetAllStudentEventListener());
+        EventHandler.registerListener(GetStudentEvent.class, new GetStudentEventListener());
+        EventHandler.registerListener(UpdateStudentEvent.class, new UpdateStudentEventListener());
         logger.info("Listeners Added to Specific Events");
 
         new Thread(() -> {
             logger.info("New Thread Started in contextInitialized()");
-            try {
-                EventHandler.invokeListeners();
-            } catch (InterruptedException e) {
-                ErrorResponse errorResponse = new ErrorResponse(HttpServletResponse.SC_CONTINUE, e.getMessage());
-                logger.info("Exception Occurred while initialize invokeListeners() : {}", errorResponse);
-            }
+            EventHandler.invokeListeners();
         }).start();
 
     }

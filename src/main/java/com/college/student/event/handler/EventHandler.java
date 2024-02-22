@@ -14,25 +14,25 @@ public class EventHandler {
     private static final Map<Class<? extends IEvent>, List<IEventListener<? extends IEvent>>> listeners = new HashMap<>();  // "?" is a wildcard means anytype here anytype of class or child class of IEvent can be accepted; // for specific eventType we have a listOf Listeners;
     private static volatile EventHandler instance;
     private static final BlockingQueue<IEvent> iEventQueue = new LinkedBlockingQueue<>();
-    private boolean sync;
+    private static boolean sync;
     private static final Logger logger = LoggerFactory.getLogger(EventHandler.class);
 
-    public EventHandler() {
-
+    private EventHandler(boolean sync) {
+        EventHandler.sync = sync;
     }
 
-    public static EventHandler getInstance() {
+    public static EventHandler getInstance(boolean sync) {
         if (instance == null) {
             synchronized (EventHandler.class) {
                 if (instance == null) {
-                    instance = new EventHandler();
+                    instance = new EventHandler(sync);
                 }
             }
         }
         return instance;
     }
 
-    public void registerListener(Class<? extends IEvent> eventType, IEventListener<? extends IEvent> listener) {
+    public static void registerListener(Class<? extends IEvent> eventType, IEventListener<? extends IEvent> listener) {
 //        List<IEventListener> iEventListeners = listeners.getOrDefault(eventType, new ArrayList<>());  //retrieves the value of eventType(key) if key is exists else it returns the default (new ArrayList<>)
 //        iEventListeners.add(listener);  //add the specific listener to the list of eventListeners and
 //        listeners.put(eventType, iEventListeners);
@@ -53,9 +53,8 @@ public class EventHandler {
         }
     }
 
-    public void publishEvent(IEvent event, boolean sync) throws InterruptedException {
+    public  void publishEvent(IEvent event) throws InterruptedException {
         logger.info("New Event Started to Publish");
-        this.sync = sync;
         iEventQueue.put(event);
         logger.info("Event added to Queue in PublishEvent()");
     }
@@ -71,7 +70,7 @@ public class EventHandler {
                List<IEventListener<? extends IEvent>> listenerList = listeners.get(event.getClass());
                if (listenerList != null) {
                    for (IEventListener<? extends IEvent> iEventListener : listenerList) {
-                       if (getInstance().sync) {
+                       if (sync) {
                            notifyListeners(event, iEventListener);
                        } else {
                            new Thread(() -> notifyListeners(event, iEventListener)).start();

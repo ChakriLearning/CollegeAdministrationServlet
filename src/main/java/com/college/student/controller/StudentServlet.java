@@ -26,11 +26,9 @@ import java.util.List;
 public class StudentServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(StudentServlet.class);
     private StudentService studentService;
-    private EventHandler eventHandler;
 
     public void init(ServletConfig servletConfig) {
         this.studentService = new StudentService(servletConfig.getInitParameter("storageType"));
-        this.eventHandler = new EventHandler();
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -53,7 +51,7 @@ public class StudentServlet extends HttpServlet {
                 Student student = gson.fromJson(jsonString, Student.class);
                 logger.info("Student Object Received : {}", student);
                 studentService.addStudent(student);
-                eventHandler.publishEvent(new AddStudentEvent(this.getClass(), student),true);  // publish the event
+                EventHandler.getInstance(true).publishEvent(new AddStudentEvent(this.getClass(), student));  // publish the event
                 logger.info("Added Student to DB");
                 jsonResponse = gson.toJson(student);
             } catch (Exception e) {
@@ -85,7 +83,7 @@ public class StudentServlet extends HttpServlet {
             try {
                 Student student = studentService.getStudentByRollNo(Integer.parseInt(rollNo));
                 logger.info("Student Details Received : {}", student);
-                eventHandler.publishEvent(new GetStudentEvent(this.getClass(), student),false);
+                EventHandler.getInstance(false).publishEvent(new GetStudentEvent(this.getClass(), student));
                 jsonResponse = gson.toJson(student);
             } catch (Exception e) {
                 logger.error("Exception Occurred while Requested to Get Student data : ", e);
@@ -97,7 +95,7 @@ public class StudentServlet extends HttpServlet {
             try {
                 List<Student> studentList = studentService.listStudents();
                 logger.info("Student List Received : {}", studentList);
-                eventHandler.publishEvent(new GetAllStudentEvent(this.getClass(), studentList),true);
+                EventHandler.getInstance(true).publishEvent(new GetAllStudentEvent(this.getClass(), studentList));
                 jsonResponse = gson.toJson(studentList);
                 logger.info("Student List Converted to json : {}", jsonResponse);
             } catch (Exception e) {
@@ -128,7 +126,7 @@ public class StudentServlet extends HttpServlet {
             Student student = gson.fromJson(jsonStringBuilder.toString(), Student.class);
             student = studentService.updateStudentDetailsByRollNo(student);
             logger.info("Request Successfully Completed for Update for Student {}", student);
-            eventHandler.publishEvent(new UpdateStudentEvent(this.getClass(), student),true);
+            EventHandler.getInstance(false).publishEvent(new UpdateStudentEvent(this.getClass(), student));
             jsonResponse = gson.toJson(student);
             logger.info("Generated the Json Response : {}", jsonResponse);
         } catch (Exception e) {
@@ -156,7 +154,7 @@ public class StudentServlet extends HttpServlet {
             Student student = studentService.deleteStudentByRollNo(rollNo);
             jsonResponse = gson.toJson(rollNo);
             logger.info("Successfully Deleted the Student : {}", student);
-            eventHandler.publishEvent(new DeleteStudentEvent(this.getClass(), student),true);
+            EventHandler.getInstance(false).publishEvent(new DeleteStudentEvent(this.getClass(), student));
         } catch (Exception e) {
             logger.info("Exception Occurred while Deleting a Student having rollNo : {} and Exception : ", rollNo, e);
             ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
