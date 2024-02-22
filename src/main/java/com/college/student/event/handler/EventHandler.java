@@ -2,6 +2,7 @@ package com.college.student.event.handler;
 
 import com.college.student.event.IEvent;
 import com.college.student.listener.IEventListener;
+import com.college.student.pojo.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,22 +61,27 @@ public class EventHandler {
     }
 
 
-    public static void invokeListeners() throws InterruptedException {
+    public static void invokeListeners()  {
         logger.info("Listeners waiting for an event just before while loop");
         while (true) {
-            logger.info("from invokeListeners(), Listeners entered into loop, and are waiting for an Event");
-            IEvent event = iEventQueue.take(); // Wait for an event to be available
-            logger.info("A new Event Occurred to Listen");
-            List<IEventListener<? extends IEvent>> listenerList = listeners.get(event.getClass());
-            if (listenerList != null) {
-                for (IEventListener<? extends IEvent> iEventListener : listenerList) {
-                    if (getInstance().sync) {
-                        notifyListeners(event, iEventListener);
-                    } else {
-                        new Thread(() -> notifyListeners(event, iEventListener)).start();
-                    }
-                }
-            }
+           try {
+               logger.info("from invokeListeners(), Listeners entered into loop, and are waiting for an Event");
+               IEvent event = iEventQueue.take(); // Wait for an event to be available
+               logger.info("A new Event Occurred to Listen");
+               List<IEventListener<? extends IEvent>> listenerList = listeners.get(event.getClass());
+               if (listenerList != null) {
+                   for (IEventListener<? extends IEvent> iEventListener : listenerList) {
+                       if (getInstance().sync) {
+                           notifyListeners(event, iEventListener);
+                       } else {
+                           new Thread(() -> notifyListeners(event, iEventListener)).start();
+                       }
+                   }
+               }
+           } catch (InterruptedException e) {
+               ErrorResponse errorResponse = new ErrorResponse(401,e.getMessage());
+               logger.info("Exception Occurred while listening the Event : {}",errorResponse);
+           }
         }
     }
 
