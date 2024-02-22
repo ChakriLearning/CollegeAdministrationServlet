@@ -2,14 +2,20 @@ package com.college.student.event.handler;
 
 import com.college.student.event.IEvent;
 import com.college.student.listener.IEventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class EventHandler {
     private static final Map<Class<? extends IEvent>, List<IEventListener<? extends IEvent>>> listeners = new HashMap<>();  // "?" is a wildcard means anytype here anytype of class or child class of IEvent can be accepted; // for specific eventType we have a listOf Listeners;
     private static volatile EventHandler instance;
-    private static final Queue<IEvent> iEventQueue = new LinkedList<>();
-private boolean sync;
+    private static final BlockingQueue<IEvent> iEventQueue = new LinkedBlockingQueue<>();
+    private boolean sync;
+    private static final Logger logger = LoggerFactory.getLogger(EventHandler.class);
+
     public EventHandler() {
 
     }
@@ -46,16 +52,20 @@ private boolean sync;
         }
     }
 
-    public void publishEvent(IEvent event, boolean sync) {
+    public void publishEvent(IEvent event, boolean sync) throws InterruptedException {
+        logger.info("New Event Started to Publish");
         this.sync = sync;
-        iEventQueue.offer(event);
-
+        iEventQueue.put(event);
+        logger.info("Event added to Queue in PublishEvent()");
     }
 
 
-    public static void invokeListeners() {
-        while (!iEventQueue.isEmpty()) {
-            IEvent event = iEventQueue.peek();
+    public static void invokeListeners() throws InterruptedException {
+        logger.info("Listeners waiting for an event just before while loop");
+        while (true) {
+            logger.info("from invokeListeners(), Listeners entered into loop, and are waiting for an Event");
+            IEvent event = iEventQueue.take(); // Wait for an event to be available
+            logger.info("A new Event Occurred to Listen");
             List<IEventListener<? extends IEvent>> listenerList = listeners.get(event.getClass());
             if (listenerList != null) {
                 for (IEventListener<? extends IEvent> iEventListener : listenerList) {
@@ -68,6 +78,7 @@ private boolean sync;
             }
         }
     }
+
 
     private static void notifyListeners(IEvent event, IEventListener listener) {
         listener.onEvent(event);
