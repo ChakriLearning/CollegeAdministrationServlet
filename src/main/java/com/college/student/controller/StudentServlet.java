@@ -85,7 +85,7 @@ public class StudentServlet extends HttpServlet {
                 logger.info("Student Details Received : {}", student);
                 EventHandler.getInstance(false).publishEvent(new GetStudentEvent(this.getClass(), student));
                 jsonResponse = gson.toJson(student);
-            } catch (Exception e) {
+            } catch (Exception | ErrorResponse e) {
                 logger.error("Exception Occurred while Requested to Get Student data : ", e);
                 ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
                 jsonResponse = gson.toJson(errorResponse);
@@ -98,7 +98,7 @@ public class StudentServlet extends HttpServlet {
                 EventHandler.getInstance(true).publishEvent(new GetAllStudentEvent(this.getClass(), studentList));
                 jsonResponse = gson.toJson(studentList);
                 logger.info("Student List Converted to json : {}", jsonResponse);
-            } catch (Exception e) {
+            } catch (Exception  | ErrorResponse e) {
                 logger.error("Exception Occurred while Requesting the to List Student Data : ", e);
                 ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
                 jsonResponse = gson.toJson(errorResponse);

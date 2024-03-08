@@ -13,6 +13,8 @@ public class Student implements Serializable {
     private byte age;
     private long phoneNo;
 
+    private int StudentPendingFee;
+
     public int getStudentPendingFee() {
         return StudentPendingFee;
     }
@@ -20,8 +22,6 @@ public class Student implements Serializable {
     public void setStudentPendingFee(int studentPendingFee) {
         StudentPendingFee = studentPendingFee;
     }
-
-    private int StudentPendingFee;
 
     public int getRollNo() {
         return this.rollNo;
