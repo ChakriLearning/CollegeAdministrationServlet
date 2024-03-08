@@ -1,8 +1,11 @@
 package com.college.student.utils;
 
 import com.college.student.pojo.Student;
+import com.college.student.service.ExecutorServiceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.Future;
 
 public class StudentFeeCalculator {
     private static final Logger logger = LoggerFactory.getLogger(StudentFeeCalculator.class);
@@ -16,13 +19,14 @@ public class StudentFeeCalculator {
         return (int) (Math.random() * (max - min + 1)) + min;
     }
 
-    public static void setStudentFee(Student student)  {
-        try {
-            logger.info("setStudentFee() - before setting student fee ");
-            student.setStudentPendingFee(StudentFeeCalculator.calculateFee());
-            logger.info("setStudentFee() - student fee set {} ",student);
-        } catch (InterruptedException e) {
-            e.getMessage();
-        }
+    public static Future<Integer> setStudentFee(Student student)  {
+//        try {
+//            logger.info("setStudentFee() - before setting student fee ");
+//            student.setStudentPendingFee(StudentFeeCalculator.calculateFee());
+//            logger.info("setStudentFee() - student fee set {} ",student);
+//        } catch (InterruptedException e) {
+//            e.getMessage();
+//        }
+        return ExecutorServiceHandler.getExecutorServiceInstance().submit(StudentFeeCalculator::calculateFee);
     }
 }
