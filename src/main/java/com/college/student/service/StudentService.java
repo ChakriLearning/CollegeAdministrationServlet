@@ -8,7 +8,7 @@ import com.college.student.repository.factory.StudentRepositoryFactory;
 import java.util.List;
 
 public class StudentService {
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
     public StudentService(String storageType) {
         this.studentRepository = StudentRepositoryFactory.getStudentRepositoryInstance(storageType);
     }

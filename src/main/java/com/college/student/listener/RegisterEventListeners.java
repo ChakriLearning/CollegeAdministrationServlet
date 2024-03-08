@@ -4,6 +4,7 @@ import com.college.student.event.handler.EventHandler;
 import com.college.student.event.impl.*;
 import com.college.student.listener.impl.*;
 import com.college.student.pojo.ErrorResponse;
+import com.college.student.service.ExecutorServiceHandler;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,10 +24,11 @@ public class RegisterEventListeners implements ServletContextListener {
         EventHandler.registerListener(UpdateStudentEvent.class, new UpdateStudentEventListener());
         logger.info("Listeners Added to Specific Events");
 
-        new Thread(() -> {
-            logger.info("New Thread Started in contextInitialized()");
-            EventHandler.invokeListeners();
-        }).start();
+        ExecutorServiceHandler.getExecutorServiceInstance().execute(EventHandler::invokeListeners);
+//        new Thread(() -> {
+//            logger.info("New Thread Started in contextInitialized()");
+//            EventHandler.invokeListeners();
+//        }).start();
 
     }
 }

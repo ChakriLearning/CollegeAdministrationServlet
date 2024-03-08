@@ -2,7 +2,9 @@ package com.college.student.repository.impl;
 
 import com.college.student.pojo.Student;
 import com.college.student.repository.StudentRepository;
+import com.college.student.service.ExecutorServiceHandler;
 import com.college.student.utils.DBConnector;
+import com.college.student.utils.StudentFeeCalculator;
 
 import java.security.spec.NamedParameterSpec;
 import java.sql.PreparedStatement;
@@ -10,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class InDBRepositoryImplementation implements StudentRepository {
     @Override
@@ -20,15 +24,20 @@ public class InDBRepositoryImplementation implements StudentRepository {
             PreparedStatement preparedStatement = DBConnector.connect().prepareStatement(query);
             ResultSet resultset = preparedStatement.executeQuery(query);
             while (resultset.next()) {
+                Future<Integer> future = ExecutorServiceHandler.getExecutorServiceInstance().submit(StudentFeeCalculator::calculateFee);
+                int pendingFee = future.get();
                 Student student = new Student();
                 student.setRollNo(resultset.getInt(1));
                 student.setName(resultset.getString("name"));
                 student.setAge(resultset.getByte(3));
                 student.setPhoneNo(resultset.getLong(4));
+                student.setStudentPendingFee(pendingFee);
                 studentList.add(student);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
         return studentList;
     }
@@ -98,6 +107,8 @@ public class InDBRepositoryImplementation implements StudentRepository {
         String selectQuery = "select * from student where rollNo = ?";
         Student student = new Student();
         try {
+            Future<Integer> future = ExecutorServiceHandler.getExecutorServiceInstance().submit(StudentFeeCalculator::calculateFee);
+            int pendingFee = future.get();
             PreparedStatement preparedStatement = DBConnector.connect().prepareStatement(selectQuery);
             preparedStatement.setInt(1,studentRollNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -106,10 +117,13 @@ public class InDBRepositoryImplementation implements StudentRepository {
                 student.setName(resultSet.getString(2));
                 student.setAge(resultSet.getByte(3));
                 student.setPhoneNo(resultSet.getLong(4));
+                student.setStudentPendingFee(pendingFee);
                 return student;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }
