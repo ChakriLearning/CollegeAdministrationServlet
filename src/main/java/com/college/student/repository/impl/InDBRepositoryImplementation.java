@@ -2,17 +2,13 @@ package com.college.student.repository.impl;
 
 import com.college.student.pojo.Student;
 import com.college.student.repository.StudentRepository;
-import com.college.student.service.ExecutorServiceHandler;
 import com.college.student.utils.DBConnector;
-import com.college.student.utils.StudentFee;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class InDBRepositoryImplementation implements StudentRepository {
     @Override

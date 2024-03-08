@@ -13,7 +13,7 @@ public class SetStorageTypeServlet extends HttpServlet {
         String storageType = request.getParameter("storageType");  //storageType
         StudentService studentService = new StudentService(storageType);  //send storageType in StudentService class
         ServletContext servletContext = request.getServletContext();
-        servletContext.setAttribute("studentService",studentService); //make studentService object as global attribute
+        servletContext.setAttribute("studentService", studentService); //make studentService object as global attribute
         try {
             response.sendRedirect("StudentChoices.html");  //now ask client to select
         } catch (IOException e) {

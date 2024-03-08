@@ -1,6 +1,5 @@
 package com.college.student.controller.oldfiles;
 
-import com.college.student.controller.oldfiles.UpdateStudentServlet;
 import com.college.student.service.StudentService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;

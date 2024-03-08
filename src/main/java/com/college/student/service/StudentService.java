@@ -5,12 +5,15 @@ import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.Student;
 import com.college.student.repository.StudentRepository;
 import com.college.student.repository.factory.StudentRepositoryFactory;
-import com.college.student.utils.StudentFee;
+import com.college.student.utils.StudentFeeCalculator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class StudentService {
+    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
 
     public StudentService(String storageType) {
@@ -21,10 +24,20 @@ public class StudentService {
         this.studentRepository.addStudent(student);
     }
 
-    public List<Student> listStudents() throws  ErrorResponse {
+    public List<Student> listStudents() throws ErrorResponse, InterruptedException {
         List<Student> studentList = this.studentRepository.listStudents();
+        List<Thread> threads = new LinkedList<>();
         for (Student student : studentList) {
-            StudentFee.setStudentFee(student);
+            Thread thread = new Thread(() -> {
+                logger.info("new thread invoked to setTheStudentFee {}",Thread.currentThread());
+                StudentFeeCalculator.setStudentFee(student);
+            });
+            threads.add(thread);
+            thread.start();
+        }
+        for (Thread thread : threads) {
+            logger.info("From main Thread : {} will wait until {}",Thread.currentThread() ,thread);
+            thread.join();
         }
         return studentList;
     }
@@ -37,10 +50,14 @@ public class StudentService {
         return this.studentRepository.updateStudentByRollNo(updateStudent);
     }
 
-    public Student getStudentByRollNo(int studentRollNo) throws ErrorResponse {
+    public Student getStudentByRollNo(int studentRollNo) throws ErrorResponse, InterruptedException {
         Student student = this.studentRepository.getStudentData(studentRollNo);
-        if (student != null) return StudentFee.setStudentFee(student);
-        return null;
+        Thread thread = new Thread( () -> {
+            StudentFeeCalculator.setStudentFee(student);
+        });
+        thread.start();
+        thread.join();
+        return student;
     }
 
     public boolean isStudentExist(int rollNo) {
