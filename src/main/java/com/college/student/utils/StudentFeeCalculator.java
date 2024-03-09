@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -25,16 +24,6 @@ public class StudentFeeCalculator {
             studentVSFee.put(student.getRollNo(), fee);
             return studentVSFee;
         });
-
     }
 
-    public boolean setStudentPendingFee(List<Student> studentList, int rollNo, double fee) {
-        for (Student student : studentList) {
-            if (student.getRollNo() == rollNo) {
-                student.setPendingFee(fee);
-                return true;
-            }
-        }
-        return false;
-    }
 }

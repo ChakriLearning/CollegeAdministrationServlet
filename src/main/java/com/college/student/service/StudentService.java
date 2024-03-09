@@ -9,10 +9,7 @@ import com.college.student.utils.StudentFeeCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -49,6 +46,7 @@ public class StudentService {
 
         List<Student> studentList = this.studentRepository.listStudents();
         List<Future<Map<Integer, Double>>> futureList = new LinkedList<>();
+        Map<Integer, Double> studentFeeMap = new HashMap<>();
         for (Student student : studentList) {
             logger.info("new thread invoked to setTheStudentFee {}", Thread.currentThread());
             futureList.add(studentFeeCalculator.calculateAndGetPendingFee(student));
@@ -64,11 +62,16 @@ public class StudentService {
                     Map.Entry<Integer, Double> next = feeMap.entrySet().iterator().next();
                     Integer rollNo = next.getKey();
                     Double fee = next.getValue();
+                    studentFeeMap.put(rollNo, fee);
                     logger.info("Fee Calculation Completed For rollNo : {}, Fee : {}", rollNo, fee);
-                    if (studentFeeCalculator.setStudentPendingFee(studentList, rollNo, fee)) iterator.remove();
+                    iterator.remove();
                 }
             }
-
+        }
+        for (Student student : studentList) {
+            if (studentFeeMap.containsKey(student.getRollNo())) {
+                student.setPendingFee(studentFeeMap.get(student.getRollNo()));
+            }
         }
         return studentList;
     }
