@@ -13,14 +13,14 @@ public class Student implements Serializable {
     private byte age;
     private long phoneNo;
 
-    private int StudentPendingFee;
+    private double pendingFee;
 
-    public int getStudentPendingFee() {
-        return StudentPendingFee;
+    public double getPendingFee() {
+        return pendingFee;
     }
 
-    public void setStudentPendingFee(int studentPendingFee) {
-        StudentPendingFee = studentPendingFee;
+    public void setPendingFee(double pendingFee) {
+        this.pendingFee = pendingFee;
     }
 
     public int getRollNo() {

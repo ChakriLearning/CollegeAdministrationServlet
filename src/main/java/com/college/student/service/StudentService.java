@@ -9,16 +9,21 @@ import com.college.student.utils.StudentFeeCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class StudentService {
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
+    private final StudentFeeCalculator studentFeeCalculator;
 
     public StudentService(String storageType) {
         this.studentRepository = StudentRepositoryFactory.getStudentRepositoryInstance(storageType);
+        this.studentFeeCalculator = new StudentFeeCalculator();
     }
 
     public void addStudent(Student student) {
@@ -43,26 +48,27 @@ public class StudentService {
 //        return studentList;
 
         List<Student> studentList = this.studentRepository.listStudents();
-        Map<Integer,Future<Integer>> futureList = new HashMap<>();
-        for (int i = 0; i < studentList.size(); i++) {
+        List<Future<Map<Integer, Double>>> futureList = new LinkedList<>();
+        for (Student student : studentList) {
             logger.info("new thread invoked to setTheStudentFee {}", Thread.currentThread());
-            futureList.put(i,StudentFeeCalculator.setStudentFee(studentList.get(i)));
+            futureList.add(studentFeeCalculator.calculateAndGetPendingFee(student));
         }
+        logger.info("Job Submitted to all Threads");
 
         while (!futureList.isEmpty()) {
-            Iterator<Map.Entry<Integer, Future<Integer>>> iterator = futureList.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<Integer, Future<Integer>> entry = iterator.next();
-                if (entry.getValue().isDone()) {
-                    Student student = studentList.get(entry.getKey());
-                    try {
-                        student.setStudentPendingFee(entry.getValue().get());
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    iterator.remove();
+            for (Iterator<Future<Map<Integer, Double>>> iterator = futureList.iterator(); iterator.hasNext(); ) {
+                Future<Map<Integer, Double>> future = iterator.next();
+                if (future.isDone()) {
+                    logger.info("");
+                    Map<Integer, Double> feeMap = future.get();
+                    Map.Entry<Integer, Double> next = feeMap.entrySet().iterator().next();
+                    Integer rollNo = next.getKey();
+                    Double fee = next.getValue();
+                    logger.info("Fee Calculation Completed For rollNo : {}, Fee : {}", rollNo, fee);
+                    if (studentFeeCalculator.setStudentPendingFee(studentList, rollNo, fee)) iterator.remove();
                 }
             }
+
         }
         return studentList;
     }
@@ -77,14 +83,12 @@ public class StudentService {
 
     public Student getStudentByRollNo(int studentRollNo) throws ErrorResponse, InterruptedException, ExecutionException {
         Student student = this.studentRepository.getStudentData(studentRollNo);
-//        Thread thread = new Thread( () -> {
-//            StudentFeeCalculator.setStudentFee(student);
-//        });
-//        thread.start();
-//        thread.join();
-//        return student;
-        Future<Integer> future = StudentFeeCalculator.setStudentFee(student);
-        student.setStudentPendingFee(future.get());
+        Future<Map<Integer, Double>> studentFeeMap = studentFeeCalculator.calculateAndGetPendingFee(student);
+        Map<Integer, Double> feeMap = studentFeeMap.get();
+        Map.Entry<Integer, Double> next = feeMap.entrySet().iterator().next();
+        Integer rollNo = next.getKey();
+        Double fee = next.getValue();
+        if (student.getRollNo() == rollNo) student.setPendingFee(fee);
         return student;
     }
 

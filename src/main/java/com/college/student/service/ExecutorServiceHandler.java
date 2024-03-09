@@ -9,7 +9,7 @@ public class ExecutorServiceHandler {
         if (executorService == null) {
             synchronized (ExecutorServiceHandler.class) {
                 if (executorService == null) {
-                    executorService = Executors.newCachedThreadPool();
+                    executorService = Executors.newFixedThreadPool(10);
                 }
             }
         }
