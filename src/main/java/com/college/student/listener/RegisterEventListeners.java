@@ -3,11 +3,9 @@ package com.college.student.listener;
 import com.college.student.event.handler.EventHandler;
 import com.college.student.event.impl.*;
 import com.college.student.listener.impl.*;
-import com.college.student.pojo.ErrorResponse;
-import com.college.student.service.ExecutorServiceHandler;
+import com.college.student.service.impl.ExecutorServiceHandler;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
-import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

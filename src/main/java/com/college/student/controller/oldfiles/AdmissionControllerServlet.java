@@ -1,6 +1,6 @@
 package com.college.student.controller.oldfiles;
 
-import com.college.student.service.StudentService;
+import com.college.student.service.impl.StudentServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ public class AdmissionControllerServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
         logger.debug("AdmissionControllerServlet.java loaded at line 17");
-        StudentService studentService = (StudentService) request.getServletContext().getAttribute("studentService");
+        StudentServiceImpl studentService = (StudentServiceImpl) request.getServletContext().getAttribute("studentService");
         String studentChoice = (String) request.getParameter("choice");
         PrintWriter out = response.getWriter();
         switch (studentChoice) {

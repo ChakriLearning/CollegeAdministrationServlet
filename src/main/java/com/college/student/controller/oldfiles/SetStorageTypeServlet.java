@@ -1,6 +1,6 @@
 package com.college.student.controller.oldfiles;
 
-import com.college.student.service.StudentService;
+import com.college.student.service.impl.StudentServiceImpl;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +11,7 @@ import java.io.IOException;
 public class SetStorageTypeServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         String storageType = request.getParameter("storageType");  //storageType
-        StudentService studentService = new StudentService(storageType);  //send storageType in StudentService class
+        StudentServiceImpl studentService = new StudentServiceImpl(storageType);  //send storageType in StudentService class
         ServletContext servletContext = request.getServletContext();
         servletContext.setAttribute("studentService", studentService); //make studentService object as global attribute
         try {

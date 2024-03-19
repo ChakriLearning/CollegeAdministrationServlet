@@ -5,6 +5,7 @@ import com.college.student.event.impl.*;
 import com.college.student.pojo.ErrorResponse;
 import com.college.student.pojo.Student;
 import com.college.student.service.StudentService;
+import com.college.student.service.impl.StudentServiceImpl;
 import com.college.student.utils.HttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -27,7 +28,7 @@ public class StudentServlet extends HttpServlet {
     private StudentService studentService;
 
     public void init(ServletConfig servletConfig) {
-        this.studentService = new StudentService(servletConfig.getInitParameter("storageType"));
+        this.studentService = new StudentServiceImpl(servletConfig.getInitParameter("storageType"));
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -97,7 +98,7 @@ public class StudentServlet extends HttpServlet {
                 EventHandler.getInstance(true).publishEvent(new GetAllStudentEvent(this.getClass(), studentList));
                 jsonResponse = gson.toJson(studentList);
                 logger.info("Student List Converted to json : {}", jsonResponse);
-            } catch (Exception  | ErrorResponse e) {
+            } catch (Exception | ErrorResponse e) {
                 logger.error("Exception Occurred while Requesting the to List Student Data : ", e);
                 ErrorResponse errorResponse = new ErrorResponse(500, e.getMessage());
                 jsonResponse = gson.toJson(errorResponse);

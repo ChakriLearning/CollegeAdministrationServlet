@@ -6,9 +6,11 @@ import com.college.student.service.UserService;
 
 public class UserServiceImpl implements UserService {
     private final UserPasswordDao userPasswordDao;
-    public UserServiceImpl(){
+
+    public UserServiceImpl() {
         this.userPasswordDao = new UserPasswordDaoImpl();
     }
+
     @Override
     public boolean authenticateUser(String userName, String userPassword) {
         return this.userPasswordDao.exists(userName, userPassword);

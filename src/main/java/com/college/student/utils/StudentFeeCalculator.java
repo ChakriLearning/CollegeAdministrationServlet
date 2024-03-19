@@ -1,7 +1,7 @@
 package com.college.student.utils;
 
 import com.college.student.pojo.Student;
-import com.college.student.service.ExecutorServiceHandler;
+import com.college.student.service.impl.ExecutorServiceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

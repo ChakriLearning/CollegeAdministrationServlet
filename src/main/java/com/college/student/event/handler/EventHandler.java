@@ -15,10 +15,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class EventHandler {
     private static final Map<Class<? extends IEvent>, List<IEventListener<? extends IEvent>>> listeners = new HashMap<>();  // "?" is a wildcard means anytype here anytype of class or child class of IEvent can be accepted; // for specific eventType we have a listOf Listeners;
-    private static volatile EventHandler instance;
     private static final BlockingQueue<IEvent> iEventQueue = new LinkedBlockingQueue<>();
-    private volatile static boolean sync;
     private static final Logger logger = LoggerFactory.getLogger(EventHandler.class);
+    private static volatile EventHandler instance;
+    private volatile static boolean sync;
 
     private EventHandler(boolean sync) {
         EventHandler.sync = sync;
@@ -47,22 +47,6 @@ public class EventHandler {
         iEventListeners.add(listener);
     }
 
-    public void unRegisterListener(Class<? extends IEvent> eventType, IEventListener<? extends IEvent> listener) {
-//        //this method retrieves the value(here List<IEventListener>) of eventType, and we removed the specific listener from that list;
-//        listeners.getOrDefault(eventType, new ArrayList<>()).remove(listener);
-        List<IEventListener<? extends IEvent>> iEventListeners = listeners.get(eventType);
-        if (iEventListeners != null) {
-            iEventListeners.remove(listener);
-        }
-    }
-
-    public void publishEvent(IEvent event) throws InterruptedException {
-        logger.info("New Event Started to Publish");
-        iEventQueue.put(event);
-        logger.info("Event added to Queue in PublishEvent()");
-    }
-
-
     public static void invokeListeners() {
         logger.info("Listeners waiting for an event just before while loop");
         while (true) {
@@ -82,14 +66,28 @@ public class EventHandler {
                 }
             } catch (InterruptedException e) {
                 ErrorResponse errorResponse = new ErrorResponse(401, e.getMessage());
-                logger.info("Exception Occurred while listening the Event : {}", errorResponse);
+                logger.info("Exception Occurred while listening the Event : ", errorResponse);
             }
         }
     }
 
-
     private static void notifyListeners(IEvent event, IEventListener listener) {
         listener.onEvent(event);
+    }
+
+    public void unRegisterListener(Class<? extends IEvent> eventType, IEventListener<? extends IEvent> listener) {
+//        //this method retrieves the value(here List<IEventListener>) of eventType, and we removed the specific listener from that list;
+//        listeners.getOrDefault(eventType, new ArrayList<>()).remove(listener);
+        List<IEventListener<? extends IEvent>> iEventListeners = listeners.get(eventType);
+        if (iEventListeners != null) {
+            iEventListeners.remove(listener);
+        }
+    }
+
+    public void publishEvent(IEvent event) throws InterruptedException {
+        logger.info("New Event Started to Publish");
+        iEventQueue.put(event);
+        logger.info("Event added to Queue in PublishEvent()");
     }
 
 }

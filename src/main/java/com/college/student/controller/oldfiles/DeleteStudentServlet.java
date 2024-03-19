@@ -1,7 +1,7 @@
 package com.college.student.controller.oldfiles;
 
 import com.college.student.pojo.Student;
-import com.college.student.service.StudentService;
+import com.college.student.service.impl.StudentServiceImpl;
 import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class DeleteStudentServlet extends HttpServlet {
-    private final StudentService studentService = new StudentService("db");
+    private final StudentServiceImpl studentService = new StudentServiceImpl("db");
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         Gson gson = new Gson();

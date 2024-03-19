@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 public class InMemoryStudentRepositoryImpl implements StudentRepository {
-    private List<Student> studentList = new ArrayList<>();
+    private final List<Student> studentList = new ArrayList<>();
     @Override
     public void addStudent(Student student) {  //adding student in list;
         studentList.add(student);
@@ -32,10 +32,8 @@ public class InMemoryStudentRepositoryImpl implements StudentRepository {
 
     @Override
     public Student updateStudentByRollNo(Student updateStudent) {
-        Iterator<Student> iterator = studentList.iterator();
-        while (iterator.hasNext()) {
-            Student student = iterator.next();
-            if(student.getRollNo() == updateStudent.getRollNo()) {
+        for (Student student : studentList) {
+            if (student.getRollNo() == updateStudent.getRollNo()) {
                 student.setRollNo(updateStudent.getRollNo());
                 student.setName(updateStudent.getName());
                 student.setAge(updateStudent.getAge());
@@ -48,10 +46,8 @@ public class InMemoryStudentRepositoryImpl implements StudentRepository {
 
     @Override
     public Student getStudentData(int studentRollNo) {
-        Iterator<Student> iterator = studentList.iterator();
-        while (iterator.hasNext()) {
-            Student student = iterator.next();
-            if(student.getRollNo() == studentRollNo) {
+        for (Student student : studentList) {
+            if (student.getRollNo() == studentRollNo) {
                 return student;
             }
         }

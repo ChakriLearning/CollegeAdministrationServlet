@@ -1,7 +1,7 @@
 package com.college.student.controller.oldfiles;
 
 import com.college.student.pojo.Student;
-import com.college.student.service.StudentService;
+import com.college.student.service.impl.StudentServiceImpl;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class AddStudentServlet extends HttpServlet {
-    private final StudentService studentService = new StudentService("db");
+    private final StudentServiceImpl studentService = new StudentServiceImpl("db");
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

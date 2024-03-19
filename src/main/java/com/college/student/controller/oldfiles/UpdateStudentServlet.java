@@ -1,7 +1,7 @@
 package com.college.student.controller.oldfiles;
 
 import com.college.student.pojo.Student;
-import com.college.student.service.StudentService;
+import com.college.student.service.impl.StudentServiceImpl;
 import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 
 public class UpdateStudentServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(UpdateStudentServlet.class);
-    private final StudentService studentService = new StudentService("db");
+    private final StudentServiceImpl studentService = new StudentServiceImpl("db");
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.debug("");
         response.setContentType("application/json");

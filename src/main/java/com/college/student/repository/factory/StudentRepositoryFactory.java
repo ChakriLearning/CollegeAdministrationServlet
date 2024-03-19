@@ -11,25 +11,26 @@ import java.util.Map;
 
 //this is factory
 public class StudentRepositoryFactory {
-    private static StudentRepository studentRepository;
-    private static final Map<String,StudentRepository> map = new HashMap<>();
+    private static final Map<String, StudentRepository> map = new HashMap<>();
+
     public static StudentRepository getStudentRepositoryInstance(String storageType) {
-        if(storageType == null) return null;
+        if (storageType == null) return null;
         if (!map.isEmpty()) {
 
         }
-        if(storageType.equals("InMemory") || storageType.equals("inmemory")) {
+        StudentRepository studentRepository;
+        if (storageType.equals("InMemory") || storageType.equals("inmemory")) {
             studentRepository = new InMemoryStudentRepositoryImpl();
-            map.put(storageType,studentRepository);
-        } else if(storageType.equals("FileMemory") || storageType.equals("filememory")){
+            map.put(storageType, studentRepository);
+        } else if (storageType.equals("FileMemory") || storageType.equals("filememory")) {
             studentRepository = new InFileStudentRepositoryImpl();
-            map.put(storageType,studentRepository);
-        } else if(storageType.equals("csv") || storageType.equals("CSV")) {
+            map.put(storageType, studentRepository);
+        } else if (storageType.equals("csv") || storageType.equals("CSV")) {
             studentRepository = new InCSVFileStudentRepositoryImpl();
-            map.put(storageType,studentRepository);
+            map.put(storageType, studentRepository);
         } else if (storageType.equals("db") || storageType.equals("indb")) {
             studentRepository = new InDBRepositoryImplementation();
-            map.put(storageType,studentRepository);
+            map.put(storageType, studentRepository);
         }
 //        return studentRepository;
         return map.get(storageType);
